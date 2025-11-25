@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-Layer Worldview Codex (v40 - Spectrum Edition)</title>
+    <style>
+        /* --- Modern, Clean Styling --- */
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --error-bg: #fff1f0;
+            --error-border: #f5222d;
+            --warn-bg: #fffbe6;
+            --warn-border: #faad14;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px;
+            transition: all 0.3s ease;
+            overflow: visible; 
+        }
+
+        h1 { text-align: center; color: var(--primary); margin-bottom: 10px; font-size: 2.2rem; }
+        h2 { color: var(--primary); margin-top: 0; font-size: 1.5rem; }
+        h3 { color: var(--primary); font-size: 1.3rem; margin-bottom: 5px; }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .version-badge {
+            background: #2c3e50;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .question-explainer {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* --- Inputs --- */
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            background-color: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--accent);
+            background-color: #fbfdff;
+        }
+
+        .option-label input[type="radio"] {
+            margin-top: 5px;
+            margin-right: 15px;
+            transform: scale(1.2);
+            accent-color: var(--accent);
+        }
+
+        .option-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-title {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .option-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* --- Buttons --- */
+        button {
+            display: block; width: 100%; padding: 16px; font-size: 1.1em;
+            font-weight: 600; color: #fff; background-color: var(--accent);
+            border: none; border-radius: 8px; cursor: pointer; margin-top: 30px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover { background-color: #2980b9; }
+        .submit-btn { background-color: var(--success); }
+        .submit-btn:hover { background-color: #219150; }
+        .restart-btn { background-color: #7f8c8d; margin-top: 20px; }
+
+        /* --- States --- */
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.5s; }
+
+        /* --- Results --- */
+        .result-box {
+            padding: 25px; border-radius: 8px; margin-top: 25px;
+            border-left: 6px solid transparent;
+        }
+        
+        .result-confirmed { background-color: #f6ffed; border-left-color: #52c41a; }
+        .result-unconfirmed { background-color: var(--warn-bg); border-left-color: var(--warn-border); }
+        .result-error { background-color: var(--error-bg); border-left-color: var(--error-border); }
+
+        .result-list {
+            padding-left: 20px;
+            margin-top: 10px;
+            columns: 2;
+        }
+        
+        @media (max-width: 600px) {
+            .result-list { columns: 1; }
+        }
+
+        .result-list li {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* --- NEW SPECTRUM CHART STYLES (v40) --- */
+        .dna-chart {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .chart-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        
+        .spectrum-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .spectrum-label {
+            width: 85px;
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .spectrum-label.left { text-align: right; }
+        .spectrum-label.right { text-align: left; }
+        
+        .spectrum-label.active {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .spectrum-track {
+            flex-grow: 1;
+            height: 4px;
+            background-color: #e0e0e0;
+            margin: 0 15px;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .spectrum-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            position: absolute;
+            top: -6px; /* Center strictly on the line */
+            transform: translateX(-50%); /* Center the dot on the exact percentage */
+            transition: left 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid white;
+        }
+
+        /* Colors for different tracks */
+        .dot-meta { background-color: #9b59b6; }
+        .dot-agency { background-color: #3498db; }
+        .dot-truth { background-color: #f1c40f; }
+        .dot-ethics { background-color: #e67e22; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tag {
+            display: inline-block; background: #eee; padding: 2px 8px;
+            border-radius: 12px; font-size: 0.8rem; font-weight: bold;
+            color: #555; margin-left: 8px; vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+    <div id="view-start" class="card fade-in">
+        <h1>🧭 Worldview Codex <span class="version-badge">v40</span></h1>
+        <p class="subtitle">Discover the philosophical architecture of your beliefs.</p>
+        <p>This tool asks 7 deep questions to map your personal philosophy against 187 distinct historical religions, philosophies, and spiritual movements.</p>
+        <button onclick="startQuiz()">Start the Journey</button>
+    </div>
+
+    <div id="view-quiz" class="card hidden">
+        <div id="q1" class="question-block fade-in">
+            <h3>1. The Nature of Reality <span class="tag">Layer 1</span></h3>
+            <div class="question-explainer">Is the physical universe all that exists, or is there a spiritual dimension?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="meta" value="physical">
+                <div class="option-text">
+                    <span class="option-title">Purely Physical</span>
+                    <span class="option-desc">The universe is only matter and energy. There are no spirits, gods, or souls.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="meta" value="more">
+                <div class="option-text">
+                    <span class="option-title">Something More</span>
+                    <span class="option-desc">Reality includes a spiritual or conscious dimension beyond just the physical world.</span>
+                </div>
+            </label>
+            <button onclick="handleNext(1)">Next Question</button>
+        </div>
+
+        <div id="q2" class="question-block hidden fade-in">
+            <h3>2. Human Agency <span class="tag">Layer 2</span></h3>
+            <div class="question-explainer">Do you have Free Will, or are your choices determined by other forces?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="agency" value="source">
+                <div class="option-text">
+                    <span class="option-title">Ultimate Source (Libertarian Free Will)</span>
+                    <span class="option-desc">I am the true captain of my soul. My will is independent of biology or fate.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="agency" value="compatibilist">
+                <div class="option-text">
+                    <span class="option-title">Free Participant (Compatibilist)</span>
+                    <span class="option-desc">I make real choices, but I exist within a larger system (God/Nature) that influences me.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="agency" value="determinist">
+                <div class="option-text">
+                    <span class="option-title">Determined (Fatalist)</span>
+                    <span class="option-desc">My choices are ultimately determined by genetics, physics, or God's decree. Free will is an illusion.</span>
+                </div>
+            </label>
+            <button onclick="handleNext(2)">Next Question</button>
+        </div>
+
+        <div id="q3" class="question-block hidden fade-in">
+            <h3>3. Source of Truth <span class="tag">Layer 3</span></h3>
+            <div class="question-explainer">When you need to find the ultimate truth, where do you look?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="epist" value="evidence">
+                <div class="option-text">
+                    <span class="option-title">External Evidence</span>
+                    <span class="option-desc">I rely on external authorities: Holy Books, Scientific Data, or Traditions.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="epist" value="reason">
+                <div class="option-text">
+                    <span class="option-title">Internal Reason</span>
+                    <span class="option-desc">I rely on internal tools: Logic, Intuition, Philosophy, or Gnosis.</span>
+                </div>
+            </label>
+            <button onclick="handleNext(3)">Next Question</button>
+        </div>
+
+        <div id="q4" class="question-block hidden fade-in">
+            <h3>4. Source of Ethics <span class="tag">Layer 4</span></h3>
+            <div class="question-explainer">Who defines what is "Right" and "Wrong"?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="ethics" value="divine">
+                <div class="option-text">
+                    <span class="option-title">A Divine Mind (God)</span>
+                    <span class="option-desc">Morality comes from the commands or nature of a God/Deity.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ethics" value="nature">
+                <div class="option-text">
+                    <span class="option-title">Cosmic Law (Nature)</span>
+                    <span class="option-desc">Morality is built into the Universe (like Karma, Natural Law, or Evolutionary survival).</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ethics" value="group">
+                <div class="option-text">
+                    <span class="option-title">The Community (Group)</span>
+                    <span class="option-desc">Morality is a social contract defined by culture, the state, or the tribe.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ethics" value="individual">
+                <div class="option-text">
+                    <span class="option-title">The Self (Individual)</span>
+                    <span class="option-desc">Morality is subjective. I decide what is right and wrong for myself.</span>
+                </div>
+            </label>
+            <button onclick="handleNext(4)">Next Question</button>
+        </div>
+
+        <div id="q5" class="question-block hidden fade-in">
+            <h3>5. Purpose of Life <span class="tag">Layer 7</span></h3>
+            <div class="question-explainer">Is there an objective purpose to human life?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="purpose" value="discovered">
+                <div class="option-text">
+                    <span class="option-title">Discovered (Pre-Ordained)</span>
+                    <span class="option-desc">Yes. There is a Cosmic Plan or Destiny that I must find and align with.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="purpose" value="created">
+                <div class="option-text">
+                    <span class="option-title">Created (Invented)</span>
+                    <span class="option-desc">No. The universe is a blank slate. I must invent my own meaning.</span>
+                </div>
+            </label>
+            <button class="submit-btn" onclick="handleCoreSubmit()">Analyze My Core Profile</button>
+        </div>
+    </div>
+
+    <div id="view-interim" class="card hidden fade-in">
+        <h2>Your Core Profile</h2>
+        <div id="interim-prose" style="margin-bottom: 30px; color: #555;"></div>
+        
+        <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent);">
+            <h3 style="margin-top:0;">Refine Your Result?</h3>
+            <p>You have a Spiritual worldview. To match you with a specific religion, we need to know about your <strong>practice</strong>.</p>
+            <button class="submit-btn" onclick="showSpiritualQuiz()">Yes, Refine My Path</button>
+            <button class="restart-btn" onclick="showFinalResults()">No, Show Me Results Now</button>
+        </div>
+    </div>
+
+    <div id="view-spiritual" class="card hidden fade-in">
+        <div id="q6" class="question-block active">
+            <h3>6. The Mechanism <span class="tag">Layer 5</span></h3>
+            <div class="question-explainer">What action is required to connect with the Divine/Truth?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="mech" value="abstract">
+                <div class="option-text">
+                    <span class="option-title">Abstract (Internal)</span>
+                    <span class="option-desc">Faith, prayer, meditation, or correct belief. Physical rituals are just symbols.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="mech" value="physical">
+                <div class="option-text">
+                    <span class="option-title">Physical (External)</span>
+                    <span class="option-desc">Sacraments, rituals, yoga, or offerings. The physical act itself is indispensable.</span>
+                </div>
+            </label>
+            <button onclick="handleNext(6)">Next Question</button>
+        </div>
+
+        <div id="q7" class="question-block hidden fade-in">
+            <h3>7. The Transaction <span class="tag">Layer 6</span></h3>
+            <div class="question-explainer">How is your salvation or ultimate goal secured?</div>
+            
+            <label class="option-label">
+                <input type="radio" name="payment" value="ongoing">
+                <div class="option-text">
+                    <span class="option-title">Multiple Human Acts</span>
+                    <span class="option-desc">It is an ongoing process. I must persevere and work at it my whole life.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="payment" value="single human act">
+                <div class="option-text">
+                    <span class="option-title">Single Human Act</span>
+                    <span class="option-desc">One definitive choice/decision secures it forever.</span>
+                </div>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="payment" value="one-time divine event">
+                <div class="option-text">
+                    <span class="option-title">Single Divine Event</span>
+                    <span class="option-desc">It is already done by God/Nature. I just receive it.</span>
+                </div>
+            </label>
+            <button class="submit-btn" onclick="handleSubmitSpiritual()">Reveal My Worldview</button>
+        </div>
+    </div>
+
+    <div id="view-results" class="card hidden fade-in">
+        <h2>Your Worldview Profile</h2>
+        <div id="result-prose" style="margin-bottom: 20px; font-size: 1.1rem; color: #444;"></div>
+        <div id="result-text"></div>
+
+        <div class="dna-chart hidden" id="dna-chart">
+            <div class="chart-title">Philosophical DNA</div>
+            
+            <div class="spectrum-row">
+                <div class="spectrum-label left" id="lbl-meta-l">Physical</div>
+                <div class="spectrum-track">
+                    <div class="spectrum-dot dot-meta" id="dot-meta" style="left:50%"></div>
+                </div>
+                <div class="spectrum-label right" id="lbl-meta-r">Spiritual</div>
+            </div>
+
+            <div class="spectrum-row">
+                <div class="spectrum-label left" id="lbl-agency-l">Determinism</div>
+                <div class="spectrum-track">
+                    <div class="spectrum-dot dot-agency" id="dot-agency" style="left:50%"></div>
+                </div>
+                <div class="spectrum-label right" id="lbl-agency-r">Free Will</div>
+            </div>
+
+            <div class="spectrum-row">
+                <div class="spectrum-label left" id="lbl-epist-l">Evidence</div>
+                <div class="spectrum-track">
+                    <div class="spectrum-dot dot-truth" id="dot-epist" style="left:50%"></div>
+                </div>
+                <div class="spectrum-label right" id="lbl-epist-r">Reason</div>
+            </div>
+
+            <div class="spectrum-row">
+                <div class="spectrum-label left" id="lbl-ethics-l">Self</div>
+                <div class="spectrum-track">
+                    <div class="spectrum-dot dot-ethics" id="dot-ethics" style="left:50%"></div>
+                </div>
+                <div class="spectrum-label right" id="lbl-ethics-r">Divine</div>
+            </div>
+        </div>
+
+        <button class="restart-btn" onclick="startOver()">Start Over</button>
+    </div>
+
+</div>
+
+<script>
+    // --- LOGIC ENGINE (v38 - 187 Entries) ---
+    const CONFIRMED_PATHS_DB = [
+        // CLUSTER 1: EVIDENTIAL THEISTS
+        { fullPath: 'more, compatibilist, evidence, divine, physical, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Roman Catholicism', 'Eastern Orthodox Christianity', 'Coptic Orthodox Church', 'Assyrian Church of the East', 'Anglicanism (High Church)', 'Oxford Movement', 'Lutheranism (High Church)', 'Methodism (Sacramental)', 'Restoration Movement', 'Church of Christ', 'LDS (Mormonism)', 'Community of Christ', 'Santería', 'Vodou (Haitian)', 'Candomblé', 'Shinto', 'Tenrikyo'] },
+        { fullPath: 'more, compatibilist, evidence, divine, abstract, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Islam (Sunni)', 'Islam (Shia)', 'Islam (Ahmadiyya)', 'Orthodox Judaism', 'Conservative Judaism', 'Karaite Judaism', 'Sikhism', 'Baha\'i Faith', 'Zoroastrianism', 'Pentecostalism', 'Assembly of God', 'Church of God in Christ', 'Foursquare Church', 'Vineyard Movement', 'Evangelicalism', 'Baptist (General)', 'Free Will Baptist', 'Southern Baptist (Non-Calvinist)', 'Methodism (Low Church)', 'Wesleyan Church', 'Church of the Nazarene', 'Salvation Army', 'Holiness Movement', 'Seventh-day Adventist', 'Jehovah\'s Witnesses', 'Christadelphians', 'Anabaptism', 'Mennonite', 'Amish', 'Hutterite', 'Brethren in Christ', 'Classical Arminianism', 'Mololinism'] },
+        { fullPath: 'more, determinist, evidence, divine, physical, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Jansenism', 'Augustinian Rigorism'] },
+        
+        // CLUSTER 2: RATIONAL THEISTS
+        { fullPath: 'more, compatibilist, reason, divine, abstract, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Sufism', 'Sufi Orders (Dervish)', 'Christian Mysticism', 'Quietism', 'Kabbalah', 'Hasidic Judaism', 'Jewish Mysticism', 'Quakerism (Society of Friends)', 'Shakers', 'Christian Science', 'New Thought', 'Unity Church', 'Science of Mind', 'Rosicrucianism', 'Martinism', 'Swedenborgianism', 'Brahmo Samaj'] },
+        { fullPath: 'more, compatibilist, reason, divine, physical, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Theophilanthropy', 'Deistic Ritualism'] },
+        { fullPath: 'more, source, reason, divine, physical, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Hermeticism', 'Neoplatonic Theurgy', 'Freemasonry', 'Masonic Rites'] },
+        { fullPath: 'more, determinist, reason, divine, abstract, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Druze Faith', 'Alawism', 'Yezidism'] },
+
+        // CLUSTER 3: SPIRITUAL NATURALISTS
+        { fullPath: 'more, compatibilist, reason, nature, abstract, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Theravada Buddhism', 'Mahayana Buddhism', 'Zen Buddhism', 'Ch\'an', 'Nichiren Buddhism', 'Secular Buddhism', 'Taoism (Classical)', 'Philosophical Taoism', 'Stoicism (Ancient)', 'Stoic Physics', 'Jainism', 'Digambara', 'Svetambara', 'Advaita Vedanta', 'Vishishtadvaita', 'Samkhya', 'Theosophy', 'Anthroposophy', 'Fourth Way (Gurdjieff)', 'Pantheism', 'Monism', 'Deep Ecology (Spiritual)', 'Ecofeminism (Spiritual)', 'Biocentrism'] },
+        { fullPath: 'more, compatibilist, reason, nature, physical, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Vajrayana (Tibetan Buddhism)', 'Dzogchen', 'Neo-Confucianism', 'Pythagoreanism'] },
+        { fullPath: 'more, determinist, reason, nature, abstract, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Gnosticism (Sethian)', 'Manichaeism', 'Catharism', 'Philosophical Pessimism'] },
+        { fullPath: 'more, source, reason, nature, abstract, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Classical Deism', 'Pelagianism', 'Unitarianism (Historical)'] },
+        { fullPath: 'more, compatibilist, reason, individual, abstract, ongoing, discovered', fingerprint: 'more, reason, individual, ongoing', examples: ['Transcendentalism', 'Emersonian Spirituality', 'Romanticism'] },
+
+        // CLUSTER 4: EVIDENTIAL NATURALISTS
+        { fullPath: 'more, compatibilist, evidence, nature, abstract, ongoing, discovered', fingerprint: 'more, evidence, nature, ongoing', examples: ['Hinduism (General)', 'Smartism', 'Arya Samaj', 'Wicca (Eclectic)', 'Kemetism', 'Soka Gakkai'] },
+        { fullPath: 'more, compatibilist, evidence, nature, physical, ongoing, discovered', fingerprint: 'more, evidence, nature, ongoing', examples: ['Taoism (Religious)', 'Daoist Alchemy', 'Asatru', 'Heathenry', 'Norse Paganism', 'Theodism', 'Modern Druidry', 'Celtic Reconstructionism', 'Hellenic Polytheism', 'Santo Daime', 'Umbanda', 'Spiritualism', 'Espiritismo', 'Tantra', 'Kundalini Yoga', 'Hatha Yoga', 'Kriya Yoga', 'Agama Hinduism', 'Shaivism', 'Shaktism'] },
+        { fullPath: 'more, determinist, evidence, nature, physical, ongoing, discovered', fingerprint: 'more, evidence, nature, ongoing', examples: ['Mandaeism', 'Sabianism'] },
+        { fullPath: 'more, compatibilist, evidence, group, physical, ongoing, discovered', fingerprint: 'more, evidence, group, ongoing', examples: ['Shamanism', 'Neo-Shamanism', 'Indigenous Australian Spirituality', 'Dreamtime', 'Native American Church', 'Lakota Tradition', 'Inuit Shamanism', 'Yoruba Religion'] },
+
+        // CLUSTER 5: GRACE THEISTS
+        { fullPath: 'more, determinist, evidence, divine, abstract, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Calvinism', 'Reformed Christianity', 'Presbyterianism', 'Congregationalism', 'Primitive Baptist', 'Strict Baptist', 'Hyper-Calvinism', 'Huguenots', 'Puritanism'] },
+        { fullPath: 'more, determinist, evidence, divine, physical, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Lutheranism (Confessional)', 'Old Lutheranism'] },
+
+        // CLUSTER 6: NATURE'S GRACE
+        { fullPath: 'more, determinist, evidence, nature, abstract, one-time divine event, discovered', fingerprint: 'more, evidence, nature, one-time divine event', examples: ['Pure Land Buddhism', 'Jodo Shinshu', 'Jodo Shu'] },
+        { fullPath: 'more, compatibilist, evidence, nature, physical, one-time divine event, discovered', fingerprint: 'more, evidence, nature, one-time divine event', examples: ['Kashi Moksha', 'Ritual Suicide (Historical Jainism)'] },
+
+        // CLUSTER 7: TRIBAL PRAGMATISTS
+        { fullPath: 'more, compatibilist, reason, group, physical, ongoing, discovered', fingerprint: 'more, reason, group, ongoing', examples: ['Confucianism', 'Aristotelianism', 'Legalism (Chinese)'] },
+        { fullPath: 'more, compatibilist, evidence, group, abstract, ongoing, discovered', fingerprint: 'more, evidence, group, ongoing', examples: ['Romani Religion', 'Folk Catholicism'] },
+        { fullPath: 'more, compatibilist, evidence, group, abstract, ongoing, created', fingerprint: 'more, evidence, group, ongoing', examples: ['Liberation Theology', 'Black Theology', 'Feminist Theology'] },
+        { fullPath: 'more, compatibilist, reason, group, abstract, ongoing, created', fingerprint: 'more, reason, group, ongoing', examples: ['Unitarian Universalism', 'Ethical Culture', 'Reconstructionist Judaism'] },
+        { fullPath: 'more, compatibilist, reason, group, physical, ongoing, created', fingerprint: 'more, reason, group, ongoing', examples: ['Civil Religion', 'State Shinto (Historical)'] },
+        { fullPath: 'physical, source, reason, group, na, na, created', fingerprint: 'physical, reason, group, na', examples: ['Existentialist Marxism', 'Sartrean Socialism', 'Situationist International'] },
+
+        // CLUSTER 8: INDIVIDUALISTS
+        { fullPath: 'more, compatibilist, evidence, individual, abstract, ongoing, discovered', fingerprint: 'more, evidence, individual, ongoing', examples: ['New Age Spirituality', 'Self-Realization Fellowship', 'Eckankar', 'I Am Movement'] },
+        { fullPath: 'more, compatibilist, evidence, individual, physical, ongoing, discovered', fingerprint: 'more, evidence, individual, ongoing', examples: ['Thelema', 'Hermetic Order of the Golden Dawn', 'Ordo Templi Orientis', 'Ceremonial Magic'] },
+        { fullPath: 'more, compatibilist, evidence, individual, physical, ongoing, created', fingerprint: 'more, evidence, individual, ongoing', examples: ['Obeah', 'Hoodoo', 'Rootwork', 'Folk Magic'] },
+        { fullPath: 'more, compatibilist, reason, individual, physical, ongoing, discovered', fingerprint: 'more, reason, individual, ongoing', examples: ['Vamachara', 'Left-Hand Path Tantra', 'Aghori'] },
+        { fullPath: 'more, source, reason, individual, abstract, ongoing, created', fingerprint: 'more, reason, individual, ongoing', examples: ['Solipsism', 'Subjective Idealism'] },
+        { fullPath: 'more, source, reason, individual, abstract, single human act, created', fingerprint: 'more, reason, individual, single human act', examples: ['Discordianism', 'Chaos Magic'] },
+
+        // CLUSTER 9: OPEN THEISTS
+        { fullPath: 'more, compatibilist, reason, divine, abstract, ongoing, created', fingerprint: 'more, reason, divine, ongoing', examples: ['Process Theology', 'Moralistic Therapeutic Deism', 'Emergent Church', 'Progressive Christianity'] },
+        { fullPath: 'more, compatibilist, evidence, divine, abstract, ongoing, created', fingerprint: 'more, evidence, divine, ongoing', examples: ['Open Theism', 'Post-Conservative Evangelicalism'] },
+
+        // SPECIALS
+        { fullPath: 'more, compatibilist, reason, divine, abstract, one-time divine event, created', fingerprint: 'more, reason, divine, one-time divine event', examples: ['Christian Universalism', 'Universalist Church of America'] },
+        { fullPath: 'more, compatibilist, evidence, divine, physical, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Eleusinian Mysteries', 'Mithraism'] },
+        { fullPath: 'more, compatibilist, evidence, divine, abstract, single human act, discovered', fingerprint: 'more, evidence, divine, single human act', examples: ['Free Grace Theology', 'Zane Hodges Theology', 'Easy Believism'] },
+        { fullPath: 'more, compatibilist, evidence, divine, abstract, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Eternal Security Baptist', 'Calvary Chapel', 'Independent Fundamental Baptist'] },
+
+        // SECULAR AXIS
+        { fullPath: 'physical, compatibilist, reason, group, na, na, created', fingerprint: 'physical, reason, group, na', examples: ['Secular Humanism', 'Humanistic Judaism', 'Utilitarianism', 'Pragmatism'] },
+        { fullPath: 'physical, compatibilist, evidence, group, na, na, created', fingerprint: 'physical, evidence, group, na', examples: ['Academic Skepticism', 'Scientific Materialism', 'Logical Positivism', 'Empiricism'] },
+        { fullPath: 'physical, determinist, evidence, group, na, na, discovered', fingerprint: 'physical, evidence, group, na', examples: ['Marxism', 'Historical Materialism', 'Dialectical Materialism', 'Communism'] },
+        { fullPath: 'physical, source, reason, individual, na, na, created', fingerprint: 'physical, reason, individual, na', examples: ['Objectivism', 'LaVeyan Satanism', 'Transhumanism', 'Rational Egoism'] },
+        { fullPath: 'physical, source, evidence, individual, na, na, created', fingerprint: 'physical, evidence, individual, na', examples: ['Epicureanism', 'Hedonism'] },
+        { fullPath: 'physical, compatibilist, reason, individual, na, na, created', fingerprint: 'physical, reason, individual, na', examples: ['Nihilism', 'Existentialism', 'Absurdism (Camus)', 'Post-Structuralism'] },
+        { fullPath: 'physical, source, reason, group, na, na, created', fingerprint: 'physical, reason, group, na', examples: ['The Satanic Temple (TST)'] },
+        { fullPath: 'physical, compatibilist, evidence, individual, na, na, created', fingerprint: 'physical, evidence, individual, na', examples: ['Raelism', 'UFO Religions'] },
+        { fullPath: 'physical, compatibilist, reason, individual, na, na, created', fingerprint: 'physical, reason, individual, na', examples: ['Modern Epicureanism'] },
+        { fullPath: 'physical, source, evidence, nature, na, na, created', fingerprint: 'physical, evidence, nature, na', examples: ['Cynicism'] },
+        { fullPath: 'physical, compatibilist, evidence, nature, na, na, created', fingerprint: 'physical, evidence, nature, na', examples: ['Social Darwinism', 'Ecofeminism (Secular)', 'Deep Ecology (Secular)'] },
+        { fullPath: 'physical, determinist, reason, nature, na, na, discovered', fingerprint: 'physical, reason, nature, na', examples: ['Spinozism', 'Determinism'] },
+        { fullPath: 'physical, determinist, evidence, nature, na, na, discovered', fingerprint: 'physical, evidence, nature, na', examples: ['Biological Determinism', 'Evolutionary Psychology', 'Sociobiology'] },
+        { fullPath: 'more, compatibilist, evidence, nature, physical, ongoing, created', fingerprint: 'more, evidence, nature, ongoing', examples: ['Atheopaganism', 'Naturalistic Pantheism'] }
+    ];
+
+    // --- LOGIC FUNCTIONS ---
+    function checkConstraints(p) {
+        const err = [];
+        if (p.meta === 'physical' && p.ethics === 'divine') err.push("Logic Error: A purely physical universe cannot have Divine ethics.");
+        if (p.meta === 'physical') {
+            if (p.agency === 'determinist' && p.purpose === 'created') err.push("Logic Error: If the universe is physically determined, purpose is inevitable (Discovered), not Created.");
+            if (p.agency !== 'determinist' && p.purpose === 'discovered') err.push("Logic Error: Without a Determiner (God/Fate), purpose must be Created by you.");
+        }
+        if (p.meta === 'more') {
+            if (p.agency === 'determinist' && p.payment === 'single human act') err.push("Logic Error: If your path is Determined, you cannot be saved by a Single Human Choice.");
+            if (p.agency === 'source' && p.payment === 'one-time divine event') err.push("Logic Error: Absolute Free Will conflicts with a unilateral Divine Event overriding it.");
+            if (p.agency === 'determinist' && p.purpose === 'created') err.push("Logic Error: If everything is Determined, purpose is pre-set (Discovered), not Created.");
+            if (p.agency === 'determinist' && p.ethics === 'individual') err.push("Logic Error: If you are Determined, you cannot independently define your own Individual ethics.");
+        }
+        return err;
+    }
+
+    function getUniqueAnalysis(p) {
+        if (p.meta === 'physical') return "You hold a complex <strong>Secular</strong> worldview. You reject the spiritual, yet your combination of Ethics and Agency creates a unique philosophy that doesn't fit standard Materialist categories.";
+        if (p.agency === 'compatibilist' && p.mech === 'physical' && p.payment === 'one-time divine event') return "You hold a view of <strong>'Sacramental Assurance.'</strong> You believe you freely choose to perform a physical ritual (like baptism), and that single act forces a divine guarantee of eternal security.";
+        if (p.agency === 'determinist' && p.epist === 'reason') return "You are a <strong>'Rational Fatalist.'</strong> You believe human destiny is fixed by fate, yet you rely on your own internal logic to understand this.";
+        if (p.agency === 'source' && p.ethics === 'group') return "You are a <strong>'Libertarian Collectivist.'</strong> You believe you are the ultimate source of your own will, yet you believe morality is defined entirely by the Community.";
+        if (p.ethics === 'nature' && p.purpose === 'created') return "You believe in a <strong>'Blind Lawgiver.'</strong> You accept that the Universe has objective Moral Laws (Karma/Nature), yet you believe it has no pre-set Purpose.";
+        if (p.ethics === 'divine' && p.purpose === 'created') return "You believe in an <strong>'Absent Commander.'</strong> You hold that a God has established strict Moral Laws, yet has not assigned a specific Purpose to life.";
+        if (p.ethics === 'individual' && p.mech === 'physical') return "You practice <strong>'Self-Made Ritualism.'</strong> You believe morality is subjective and defined by you, yet you rely on indispensable physical rituals to connect with the spiritual.";
+        return "Your worldview is a highly specific <strong>'Custom Build.'</strong> You have combined theological blocks—Agency, Ethics, and Ritual—in a way that no major historical religion has standardized.";
+    }
+
+    // --- VISUAL CHART RENDERER (v40) ---
+    function renderChart(p) {
+        document.getElementById('dna-chart').classList.remove('hidden');
+        
+        // Reset labels
+        document.querySelectorAll('.spectrum-label').forEach(el => el.classList.remove('active'));
+
+        // 1. Reality (Binary)
+        let metaPos = p.meta === 'more' ? '100%' : '0%';
+        document.getElementById('dot-meta').style.left = metaPos;
+        if(p.meta === 'more') document.getElementById('lbl-meta-r').classList.add('active');
+        else document.getElementById('lbl-meta-l').classList.add('active');
+
+        // 2. Agency (Trinary)
+        let agencyPos = '50%';
+        if(p.agency === 'source') { agencyPos = '100%'; document.getElementById('lbl-agency-r').classList.add('active'); }
+        else if(p.agency === 'determinist') { agencyPos = '0%'; document.getElementById('lbl-agency-l').classList.add('active'); }
+        document.getElementById('dot-agency').style.left = agencyPos;
+
+        // 3. Truth (Binary)
+        let epistPos = p.epist === 'reason' ? '100%' : '0%';
+        document.getElementById('dot-epist').style.left = epistPos;
+        if(p.epist === 'reason') document.getElementById('lbl-epist-r').classList.add('active');
+        else document.getElementById('lbl-epist-l').classList.add('active');
+
+        // 4. Ethics (Quaternary Scale)
+        let ethicsPos = '0%';
+        let ethicsTarget = '';
+        if(p.ethics === 'divine') { ethicsPos = '100%'; document.getElementById('lbl-ethics-r').classList.add('active'); }
+        else if(p.ethics === 'nature') { ethicsPos = '66%'; }
+        else if(p.ethics === 'group') { ethicsPos = '33%'; }
+        else { ethicsPos = '0%'; document.getElementById('lbl-ethics-l').classList.add('active'); }
+        document.getElementById('dot-ethics').style.left = ethicsPos;
+    }
+
+    // --- UI FUNCTIONS ---
+    const userProfile = { meta: null, agency: null, epist: null, ethics: null, purpose: null, mech: null, payment: null };
+    const questionMap = { q1: 'meta', q2: 'agency', q3: 'epist', q4: 'ethics', q5: 'purpose', q6: 'mech', q7: 'payment' };
+
+    function switchView(viewId) {
+        document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
+        document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    function startQuiz() { switchView('view-quiz'); showQuestion('q1'); }
+
+    function showQuestion(qID) {
+        document.querySelectorAll('.question-block').forEach(q => q.classList.add('hidden'));
+        document.getElementById(qID).classList.remove('hidden');
+    }
+
+    function handleNext(qNum) {
+        const qID = `q${qNum}`;
+        const qName = questionMap[qID];
+        const selected = document.querySelector(`input[name="${qName}"]:checked`);
+        if (!selected) { alert("Please select an option."); return; }
+        userProfile[qName] = selected.value;
+        showQuestion(`q${qNum + 1}`);
+    }
+
+    function handleCoreSubmit() {
+        const selected = document.querySelector(`input[name="purpose"]:checked`);
+        if (!selected) { alert("Please select an option."); return; }
+        userProfile.purpose = selected.value;
+        
+        if (userProfile.meta === 'physical') {
+            userProfile.mech = 'na'; userProfile.payment = 'na'; showFinalResults();
+        } else {
+            let prose = `So far, you believe there is <strong>Something More</strong> than the physical world. `;
+            prose += `You see yourself as a <strong>${userProfile.agency === 'compatibilist' ? 'Free Participant' : userProfile.agency === 'source' ? 'Free Agent' : 'Determined Being'}</strong>. `;
+            prose += `You find truth through <strong>${userProfile.epist === 'evidence' ? 'External Sources' : 'Internal Reason'}</strong> and define right and wrong based on <strong>${userProfile.ethics}</strong> standards.`;
+            document.getElementById('interim-prose').innerHTML = prose;
+            switchView('view-interim');
+        }
+    }
+
+    function showSpiritualQuiz() { switchView('view-spiritual'); showQuestion('q6'); }
+
+    function handleSubmitSpiritual() {
+        const selected = document.querySelector(`input[name="payment"]:checked`);
+        if (!selected) { alert("Please select an option."); return; }
+        userProfile.payment = selected.value;
+        showFinalResults();
+    }
+
+    function getFullPath(p) {
+        return [p.meta, p.agency, p.epist, p.ethics, p.mech, p.payment, p.purpose].join(', ');
+    }
+
+    function getFingerprint(p) {
+        return [p.meta, p.epist, p.ethics, p.payment].join(', ');
+    }
+
+    function findClosestMatch(userFingerprint) {
+        const matches = new Set(); 
+        CONFIRMED_PATHS_DB.forEach(path => {
+            if (path.fingerprint === userFingerprint) {
+                path.examples.forEach(example => matches.add(example));
+            }
+        });
+        return matches.size > 0 ? Array.from(matches) : null;
+    }
+
+    function showFinalResults() {
+        switchView('view-results');
+        const fullPath = getFullPath(userProfile);
+        const errors = checkConstraints(userProfile);
+        const resultDiv = document.getElementById('result-text');
+        
+        let prose = `Your worldview is rooted in a <strong>${userProfile.meta === 'physical' ? 'Physical' : 'Spiritual'}</strong> reality. `;
+        
+        if(userProfile.agency === 'source') prose += `You see yourself as an independent agent with <strong>Free Will</strong>, `;
+        else if(userProfile.agency === 'compatibilist') prose += `You see yourself as a <strong>Free Participant</strong> in a larger system, `;
+        else prose += `You believe your path is <strong>Determined</strong> by fate or biology, `;
+
+        prose += `and you find truth through <strong>${userProfile.epist === 'evidence' ? 'External Sources' : 'Internal Reason'}</strong>. `;
+        
+        if(userProfile.ethics === 'divine') prose += `You believe morality comes from a <strong>Higher Power</strong>. `;
+        else if(userProfile.ethics === 'nature') prose += `You believe morality comes from <strong>Natural Law</strong>. `;
+        else if(userProfile.ethics === 'group') prose += `You believe morality is defined by the <strong>Community</strong>. `;
+        else prose += `You believe morality is defined by the <strong>Individual</strong>. `;
+
+        if(userProfile.mech && userProfile.mech !== 'na') {
+            prose += `To connect with this truth, you rely on <strong>${userProfile.mech === 'abstract' ? 'Internal Faith' : 'Physical Rituals'}</strong>. `;
+            if (userProfile.payment === 'ongoing') prose += `You view salvation/growth as a lifelong journey requiring <strong>Multiple Human Acts</strong>. `;
+            else if (userProfile.payment === 'single human act') prose += `You believe your destiny is secured by a <strong>Single Human Decision</strong>. `;
+            else prose += `You rely on a <strong>Single Divine Event</strong> (like Grace) that secures you forever. `;
+        }
+
+        if (userProfile.purpose === 'discovered') prose += `Ultimately, you believe life's purpose is <strong>Pre-ordained</strong> for you to discover.`;
+        else prose += `Ultimately, you believe life's purpose is <strong>Created</strong> by you.`;
+
+        document.getElementById('result-prose').innerHTML = prose;
+        
+        // RENDER VISUAL CHART
+        renderChart(userProfile);
+
+        if (errors.length > 0) {
+            resultDiv.innerHTML = `<div class="result-box result-error"><h3>🟥 Logic Conflict Detected</h3><p>Your worldview has internal contradictions:</p><ul class="result-list">${errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
+        } else {
+            const match = CONFIRMED_PATHS_DB.find(p => p.fullPath === fullPath);
+            if (match) {
+                resultDiv.innerHTML = `<div class="result-box result-confirmed"><h3>🟩 Confirmed Path</h3><p>Your worldview matches a specific historical tradition:</p><ul class="result-list">${match.examples.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
+            } else {
+                const explanation = getUniqueAnalysis(userProfile);
+                let html = `<div class="result-box result-unconfirmed"><h3>🟨 Unique Path</h3><p>${explanation}</p>`;
+                
+                if (userProfile.payment) {
+                    const matches = findClosestMatch(getFingerprint(userProfile));
+                    if (matches) {
+                        html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;"><h4>Your Philosophical Family</h4><p>While your exact path is unique, you share core values with:</p><ul class="result-list">${matches.map(m => `<li>${m}</li>`).join('')}</ul></div>`;
+                    }
+                }
+                html += `</div>`;
+                resultDiv.innerHTML = html;
+            }
+        }
+    }
+
+    function startOver() { location.reload(); }
+    document.addEventListener('DOMContentLoaded', () => startQuiz());
+</script>
+
+</body>
+</html>
