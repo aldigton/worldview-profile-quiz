@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7-Layer Worldview Codex (v40 - Spectrum Edition)</title>
+    <title>7-Layer Worldview Codex (v41 - UX Update)</title>
     <style>
         /* --- Modern, Clean Styling --- */
         :root {
@@ -165,7 +165,7 @@
             font-size: 0.95rem;
         }
 
-        /* --- NEW SPECTRUM CHART STYLES (v40) --- */
+        /* --- SPECTRUM CHART STYLES --- */
         .dna-chart {
             margin-top: 40px;
             padding-top: 20px;
@@ -219,14 +219,13 @@
             border-radius: 50%;
             background-color: var(--accent);
             position: absolute;
-            top: -6px; /* Center strictly on the line */
-            transform: translateX(-50%); /* Center the dot on the exact percentage */
+            top: -6px;
+            transform: translateX(-50%);
             transition: left 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             border: 2px solid white;
         }
 
-        /* Colors for different tracks */
         .dot-meta { background-color: #9b59b6; }
         .dot-agency { background-color: #3498db; }
         .dot-truth { background-color: #f1c40f; }
@@ -249,7 +248,7 @@
 <div class="app-wrapper">
 
     <div id="view-start" class="card fade-in">
-        <h1>🧭 Worldview Codex <span class="version-badge">v40</span></h1>
+        <h1>🧭 Worldview Codex <span class="version-badge">v41</span></h1>
         <p class="subtitle">Discover the philosophical architecture of your beliefs.</p>
         <p>This tool asks 7 deep questions to map your personal philosophy against 187 distinct historical religions, philosophies, and spiritual movements.</p>
         <button onclick="startQuiz()">Start the Journey</button>
@@ -306,21 +305,21 @@
         </div>
 
         <div id="q3" class="question-block hidden fade-in">
-            <h3>3. Source of Truth <span class="tag">Layer 3</span></h3>
-            <div class="question-explainer">When you need to find the ultimate truth, where do you look?</div>
+            <h3>3. Finding Answers <span class="tag">Layer 3</span></h3>
+            <div class="question-explainer">When you have a deep question about life, who do you trust most to give you the answer?</div>
             
             <label class="option-label">
                 <input type="radio" name="epist" value="evidence">
                 <div class="option-text">
-                    <span class="option-title">External Evidence</span>
-                    <span class="option-desc">I rely on external authorities: Holy Books, Scientific Data, or Traditions.</span>
+                    <span class="option-title">I Look Outward (Sources)</span>
+                    <span class="option-desc">I trust things outside of myself: Facts, History, Science, Holy Books, or Teachers.</span>
                 </div>
             </label>
             <label class="option-label">
                 <input type="radio" name="epist" value="reason">
                 <div class="option-text">
-                    <span class="option-title">Internal Reason</span>
-                    <span class="option-desc">I rely on internal tools: Logic, Intuition, Philosophy, or Gnosis.</span>
+                    <span class="option-title">I Look Inward (Insight)</span>
+                    <span class="option-desc">I trust my own internal tools: My Logic, Intuition, Conscience, or "Gut Feeling."</span>
                 </div>
             </label>
             <button onclick="handleNext(3)">Next Question</button>
@@ -493,7 +492,7 @@
 </div>
 
 <script>
-    // --- LOGIC ENGINE (v38 - 187 Entries) ---
+    // --- LOGIC ENGINE (v38/41 - 187 Entries) ---
     const CONFIRMED_PATHS_DB = [
         // CLUSTER 1: EVIDENTIAL THEISTS
         { fullPath: 'more, compatibilist, evidence, divine, physical, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Roman Catholicism', 'Eastern Orthodox Christianity', 'Coptic Orthodox Church', 'Assyrian Church of the East', 'Anglicanism (High Church)', 'Oxford Movement', 'Lutheranism (High Church)', 'Methodism (Sacramental)', 'Restoration Movement', 'Church of Christ', 'LDS (Mormonism)', 'Community of Christ', 'Santería', 'Vodou (Haitian)', 'Candomblé', 'Shinto', 'Tenrikyo'] },
@@ -598,7 +597,7 @@
         return "Your worldview is a highly specific <strong>'Custom Build.'</strong> You have combined theological blocks—Agency, Ethics, and Ritual—in a way that no major historical religion has standardized.";
     }
 
-    // --- VISUAL CHART RENDERER (v40) ---
+    // --- VISUAL CHART RENDERER ---
     function renderChart(p) {
         document.getElementById('dna-chart').classList.remove('hidden');
         
