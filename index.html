@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7-Layer Worldview Codex (v43 - Stable)</title>
+    <title>7-Layer Worldview Codex (v45 - Final Polish)</title>
     <style>
         /* --- Modern, Clean Styling --- */
         :root {
@@ -249,7 +249,7 @@
 <div class="app-wrapper">
 
     <div id="view-start" class="card fade-in">
-        <h1>🧭 Worldview Codex <span class="version-badge">v43</span></h1>
+        <h1>🧭 Worldview Codex <span class="version-badge">v45</span></h1>
         <p class="subtitle">Discover the philosophical architecture of your beliefs.</p>
         <p>This tool asks 7 deep questions to map your personal philosophy against 187 distinct historical religions, philosophies, and spiritual movements.</p>
         <button onclick="startQuiz()">Start the Journey</button>
@@ -493,7 +493,7 @@
 </div>
 
 <script>
-    // --- LOGIC ENGINE (v43 - 187 Entries) ---
+    // --- LOGIC ENGINE (v45 - 187 Entries) ---
     const CONFIRMED_PATHS_DB = [
         // CLUSTER 1: EVIDENTIAL THEISTS
         { fullPath: 'more, compatibilist, evidence, divine, physical, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Roman Catholicism', 'Eastern Orthodox Christianity', 'Coptic Orthodox Church', 'Assyrian Church of the East', 'Anglicanism (High Church)', 'Oxford Movement', 'Lutheranism (High Church)', 'Methodism (Sacramental)', 'Restoration Movement', 'Church of Christ', 'LDS (Mormonism)', 'Community of Christ', 'Santería', 'Vodou (Haitian)', 'Candomblé', 'Shinto', 'Tenrikyo'] },
@@ -589,12 +589,21 @@
 
     function getUniqueAnalysis(p) {
         if (p.meta === 'physical') return "You hold a complex <strong>Secular</strong> worldview. You reject the spiritual, yet your combination of Ethics and Agency creates a unique philosophy that doesn't fit standard Materialist categories.";
-        if (p.agency === 'compatibilist' && p.mech === 'physical' && p.payment === 'one-time divine event') return "You hold a view of <strong>'The Physical Covenant.'</strong> You believe you freely choose to perform a physical ritual (like baptism), and that single act connects you to the divine forever.";
-        if (p.agency === 'determinist' && p.epist === 'reason') return "You are a <strong>'Rational Fatalist.'</strong> You believe human destiny is fixed by fate, yet you rely on your own internal logic to understand this.";
-        if (p.agency === 'source' && p.ethics === 'group') return "You are a <strong>'Libertarian Collectivist.'</strong> You believe you are the ultimate source of your own will, yet you believe morality is defined entirely by the Community.";
-        if (p.ethics === 'nature' && p.purpose === 'created') return "You believe in an <strong>'Impartial Cosmic Order.'</strong> You accept that the Universe has objective Moral Laws (Karma/Nature), yet you believe it has no pre-set Purpose.";
-        if (p.ethics === 'divine' && p.purpose === 'created') return "You believe in <strong>'The Silent Architect.'</strong> You hold that a God has established strict Moral Laws, yet has not assigned a specific Purpose to life.";
+        
+        if (p.agency === 'compatibilist' && p.mech === 'physical' && p.payment === 'one-time divine event') return "You believe in <strong>'The Tangible Believer.'</strong> You freely choose to perform a physical ritual (like baptism), and that single act settles your connection to the divine forever.";
+        
+        if (p.agency === 'determinist' && p.epist === 'reason') return "You are <strong>'The Wise Observer.'</strong> You believe destiny is fixed by fate, yet you use your own logic to understand it.";
+        
+        // Softened "Libertarian Collectivist"
+        if (p.agency === 'source' && p.ethics === 'group') return "You are <strong>'The Community Individualist.'</strong> You deeply value your personal freedom to choose, but you recognize that right and wrong are not private decisions—they are defined by our shared responsibility to the community.";
+        
+        // Plain English v44 Updates
+        if (p.ethics === 'nature' && p.purpose === 'created') return "You believe in <strong>'The Blank Script.'</strong> You agree the stage is set with strict rules (like Karma or Nature), but the script is blank. You have to write the story yourself.";
+        
+        if (p.ethics === 'divine' && p.purpose === 'created') return "You believe in <strong>'God's House, Your Rules.'</strong> You accept that God established the moral laws, but gave you no specific purpose. You must build your own meaning within God's framework.";
+        
         if (p.ethics === 'individual' && p.mech === 'physical') return "You practice <strong>'Personalized Sacred Practice.'</strong> You believe morality is subjective and defined by you, yet you rely on meaningful physical rituals to connect with the spiritual.";
+        
         return "Your worldview is a highly specific <strong>'Custom Build.'</strong> You have combined theological blocks—Agency, Ethics, and Ritual—in a way that no major historical religion has standardized.";
     }
 
@@ -736,7 +745,6 @@
         renderChart(userProfile);
 
         if (errors.length > 0) {
-            // Updated Soft Paradox Box
             resultDiv.innerHTML = `<div class="result-box result-paradox"><h3>🔸 Philosophical Paradox</h3><p>You hold two powerful ideas that create a unique tension in your worldview:</p><ul class="result-list">${errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
         } else {
             const match = CONFIRMED_PATHS_DB.find(p => p.fullPath === fullPath);
@@ -746,10 +754,21 @@
                 const explanation = getUniqueAnalysis(userProfile);
                 let html = `<div class="result-box result-unconfirmed"><h3>🟨 Unique Path</h3><p>${explanation}</p>`;
                 
+                // --- UNALIGNED LOGIC (v45 Fix) ---
                 if (userProfile.payment) {
                     const matches = findClosestMatch(getFingerprint(userProfile));
-                    if (matches) {
+                    
+                    if (matches && matches.length > 0) {
+                        // CASE A: The Cousins (Match Found)
                         html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;"><h4>Your Philosophical Family</h4><p>While your exact path is unique, you share core values with:</p><ul class="result-list">${matches.map(m => `<li>${m}</li>`).join('')}</ul></div>`;
+                    } else {
+                        // CASE B: The Unaligned (Neutral)
+                        html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;">
+                                    <h4>🧩 Unaligned Worldview</h4>
+                                    <p>Your worldview is logically valid, but historically rare.</p>
+                                    <p>You have combined specific beliefs (like your views on <strong>Truth</strong> and <strong>Ethics</strong>) in a way that doesn't fit the standard definitions of any major religious tradition.</p>
+                                    <p>You are walking a solo path.</p>
+                                 </div>`;
                     }
                 }
                 html += `</div>`;
