@@ -3,258 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worldview Codex v61</title>
     
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Worldview Codex" />
-    <meta property="og:description" content="Discover the philosophical architecture of your beliefs. Map your worldview against 187 historical traditions in 2 minutes." />
-    <meta property="og:image" content="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/compass_1f9ed.png" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com; base-uri 'self'; frame-ancestors 'none';">
     
+    <title>Worldview Codex - Map Your Philosophy in 7 Questions</title>
+    <meta name="description" content="A privacy-first classroom tool that maps your personal philosophy against 187 historical traditions. No tracking, no database.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Worldview Codex">
+    <meta property="og:description" content="Discover the philosophical architecture of your beliefs.">
+    <meta property="og:image" content="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/compass_1f9ed.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Worldview Codex",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "A client-side philosophical assessment tool that maps user worldviews to historical traditions."
+    }
+    </script>
+
     <style>
-        /* --- Modern, Clean Styling --- */
-        :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --success: #27ae60;
-            --bg: #f0f2f5;
-            --card: #ffffff;
-            --text: #333333;
-            --text-light: #666666;
-            --error-bg: #fff1f0;
-            --error-border: #f5222d;
-            --warn-bg: #fffbe6;
-            --warn-border: #faad14;
-            --error-text: #e74c3c;
+        /* CSS RESET & VARIABLES */
+        :root { 
+            --primary: #2c3e50; --accent: #3498db; --success: #27ae60; 
+            --bg: #f0f2f5; --card: #ffffff; --text: #333333; --text-light: #666666; 
+            --error-bg: #fff1f0; --error-border: #f5222d; --warn-bg: #fffbe6; 
+            --warn-border: #faad14; --error-text: #e74c3c; 
         }
-
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .app-wrapper {
-            width: 100%;
-            max-width: 700px;
-            margin-top: 40px;
-            margin-bottom: 60px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card {
-            background-color: var(--card);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 40px;
-            transition: all 0.3s ease;
-            overflow: visible; 
-            margin-bottom: 20px;
-        }
-
-        h1 { text-align: center; color: var(--primary); margin-bottom: 10px; font-size: 2.2rem; }
-        h2 { color: var(--primary); margin-top: 0; font-size: 1.5rem; }
-        h3 { color: var(--primary); font-size: 1.3rem; margin-bottom: 5px; }
+        *, *::before, *::after { box-sizing: border-box; }
         
-        .subtitle {
-            text-align: center;
-            color: var(--text-light);
-            margin-bottom: 30px;
-            font-size: 1.1rem;
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg); color: var(--text); 
+            line-height: 1.6; margin: 0; padding: 20px; 
+            display: flex; justify-content: center; min-height: 100vh; 
         }
 
-        /* --- ERROR MESSAGE --- */
-        .validation-error {
-            color: var(--error-text);
-            font-size: 0.9rem;
-            margin-top: 10px;
-            font-weight: 600;
-            display: none;
-            animation: shake 0.3s ease-in-out;
-        }
+        /* LAYOUT */
+        .app-wrapper { width: 100%; max-width: 700px; margin-top: 40px; margin-bottom: 60px; display: flex; flex-direction: column; }
+        .card { background-color: var(--card); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 40px; transition: opacity 0.3s ease; margin-bottom: 20px; }
+        
+        /* TYPOGRAPHY */
+        h1 { text-align: center; color: var(--primary); margin-bottom: 10px; font-size: 2.2rem; }
+        h2 { color: var(--primary); margin-top: 0; font-size: 1.5rem; outline: none; } /* Outline none for focus management */
+        h3 { color: var(--primary); font-size: 1.3rem; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: var(--text-light); margin-bottom: 30px; font-size: 1.1rem; }
+        
+        /* UTILITIES & ANIMATIONS */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
+        /* FORM ELEMENTS */
+        fieldset { border: none; padding: 0; margin: 0; }
+        .question-explainer { color: var(--text-light); font-size: 0.95rem; margin-bottom: 20px; border-left: 4px solid var(--accent); padding: 10px 15px; background: #f8f9fa; border-radius: 0 4px 4px 0; }
+        
+        .option-label { display: flex; align-items: flex-start; background-color: #fafafa; border: 2px solid #e0e0e0; border-radius: 8px; padding: 15px; margin: 12px 0; cursor: pointer; transition: all 0.2s; }
+        .option-label:hover { border-color: var(--accent); background-color: #fbfdff; }
+        .option-label:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
+        
+        .option-label input[type="radio"] { margin-top: 5px; margin-right: 15px; transform: scale(1.2); accent-color: var(--accent); }
+        .option-text { display: flex; flex-direction: column; }
+        .option-title { font-weight: 700; color: var(--primary); }
+        .option-desc { font-size: 0.9rem; color: var(--text-light); margin-top: 4px; }
 
-        /* --- TRUST ELEMENTS --- */
-        .privacy-note-start {
-            background-color: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #555;
-            margin-top: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: auto;
-            padding-top: 20px;
-            color: #999;
-            font-size: 0.85rem;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .version-badge {
-            background: #2c3e50;
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            vertical-align: middle;
-            margin-left: 10px;
-        }
-
-        .question-explainer {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent);
-            padding-left: 15px;
-            background: #f8f9fa;
-            padding: 10px 15px;
-            border-radius: 0 4px 4px 0;
-        }
-
-        /* --- Inputs --- */
-        .option-label {
-            display: flex;
-            align-items: flex-start;
-            background-color: #fafafa;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 12px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .option-label:hover {
-            border-color: var(--accent);
-            background-color: #fbfdff;
-        }
-
-        .option-label input[type="radio"] {
-            margin-top: 5px;
-            margin-right: 15px;
-            transform: scale(1.2);
-            accent-color: var(--accent);
-        }
-
-        .option-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .option-title {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .option-desc {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-top: 4px;
-        }
-
-        /* --- Buttons --- */
-        button {
-            display: block; width: 100%; padding: 16px; font-size: 1.1em;
-            font-weight: 600; color: #fff; background-color: var(--accent);
-            border: none; border-radius: 8px; cursor: pointer; margin-top: 30px;
-            transition: background-color 0.2s;
-        }
-
+        /* BUTTONS */
+        button { display: block; width: 100%; padding: 16px; font-size: 1.1em; font-weight: 600; color: #fff; background-color: var(--accent); border: none; border-radius: 8px; cursor: pointer; margin-top: 30px; transition: background-color 0.2s; }
         button:hover { background-color: #2980b9; }
+        button:focus { outline: 3px solid rgba(52, 152, 219, 0.4); }
         .submit-btn { background-color: var(--success); }
         .submit-btn:hover { background-color: #219150; }
         .restart-btn { background-color: #7f8c8d; margin-top: 20px; }
 
-        /* --- States --- */
-        .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.5s; }
-
-        /* --- Results --- */
-        .result-box {
-            padding: 25px; border-radius: 8px; margin-top: 25px;
-            border-left: 6px solid transparent;
-        }
+        /* ALERTS & RESULTS */
+        .validation-error { color: var(--error-text); font-size: 0.9rem; margin-top: 10px; font-weight: 600; display: none; animation: shake 0.3s ease-in-out; }
+        .privacy-note-start { background-color: #f8f9fa; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; font-size: 0.9rem; color: #555; margin-top: 25px; display: flex; align-items: center; gap: 10px; }
         
+        .result-box { padding: 25px; border-radius: 8px; margin-top: 25px; border-left: 6px solid transparent; }
         .result-confirmed { background-color: #f6ffed; border-left-color: #52c41a; }
-        
-        /* Paradox Box (Orange) */
         .result-paradox { background-color: #fffbe6; border-left-color: #faad14; }
-        
-        /* Unaligned Box (Yellow) */
         .result-unconfirmed { background-color: var(--warn-bg); border-left-color: var(--warn-border); }
-        
         .result-error { background-color: var(--error-bg); border-left-color: var(--error-border); }
-
-        .result-list {
-            padding-left: 20px;
-            margin-top: 10px;
-            columns: 2;
-        }
+        .result-list { padding-left: 20px; margin-top: 10px; columns: 2; }
+        @media (max-width: 600px) { .result-list { columns: 1; } }
         
-        @media (max-width: 600px) {
-            .result-list { columns: 1; }
-        }
-
-        .result-list li {
-            margin-bottom: 5px;
-            color: #2c3e50;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .tag {
-            display: inline-block; background: #eee; padding: 2px 8px;
-            border-radius: 12px; font-size: 0.8rem; font-weight: bold;
-            color: #555; margin-left: 8px; vertical-align: middle;
-        }
+        .footer { text-align: center; margin-top: auto; padding-top: 20px; color: #999; font-size: 0.85rem; border-top: 1px solid #e0e0e0; }
+        .version-badge { background: #2c3e50; color: #fff; font-size: 0.75rem; padding: 3px 8px; border-radius: 12px; vertical-align: middle; margin-left: 10px; }
+        .tag { display: inline-block; background: #eee; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; color: #555; margin-left: 8px; vertical-align: middle; }
     </style>
 </head>
 <body>
 
-<div class="app-wrapper">
-
-    <div id="view-start" class="card fade-in">
-        <h1>🧭 Worldview Codex <span class="version-badge">v61</span></h1>
+<main class="app-wrapper" role="main">
+    
+    <section id="view-start" class="card fade-in" aria-labelledby="start-title">
+        <h1 id="start-title">🧭 Worldview Codex <span class="version-badge">v65</span></h1>
         <p class="subtitle">Discover the philosophical architecture of your beliefs.</p>
         <p>This tool asks 7 deep questions to map your personal philosophy against 187 distinct historical religions, philosophies, and spiritual movements.</p>
         
         <div class="privacy-note-start">
-            <span>🔒</span>
+            <span aria-hidden="true">🔒</span>
             <div><strong>Safe & Private:</strong> This tool runs entirely in your browser. No data is collected, stored, or tracked.</div>
         </div>
+        
+        <button type="button" id="btn-start">Start the Journey</button>
+    </section>
 
-        <button type="button" onclick="startQuiz()">Start the Journey</button>
-    </div>
-
-    <div id="view-quiz" class="card hidden">
-        <div id="q1" class="question-block fade-in">
-            <h3>1. The Foundation <span class="tag">Layer 1</span></h3>
+    <section id="view-quiz" class="card hidden" aria-live="polite">
+        
+        <fieldset id="q1" class="question-block fade-in">
+            <legend><h3>1. The Foundation <span class="tag">Layer 1</span></h3></legend>
             <div class="question-explainer">Is the physical universe all that exists, or is there a spiritual dimension?</div>
+            
             <label class="option-label">
                 <input type="radio" name="meta" value="physical">
                 <div class="option-text"><span class="option-title">Purely Physical</span><span class="option-desc">The universe is only matter and energy. There are no spirits, gods, or souls.</span></div>
@@ -263,32 +132,36 @@
                 <input type="radio" name="meta" value="more">
                 <div class="option-text"><span class="option-title">Something More</span><span class="option-desc">Reality includes a spiritual or conscious dimension beyond just the physical world.</span></div>
             </label>
-            <div class="validation-error" id="err-q1">⚠️ Please select an option to continue.</div>
-            <button type="button" onclick="handleNext(1)">Next Question</button>
-        </div>
+            
+            <div class="validation-error" id="err-q1" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="btn-next" data-current="1">Next Question</button>
+        </fieldset>
 
-        <div id="q2" class="question-block hidden fade-in">
-            <h3>2. The Author of Your Life <span class="tag">Layer 2</span></h3>
+        <fieldset id="q2" class="question-block hidden fade-in">
+            <legend><h3>2. The Author of Your Life <span class="tag">Layer 2</span></h3></legend>
             <div class="question-explainer">Think about your life story. Who is writing the script?</div>
+            
             <label class="option-label">
                 <input type="radio" name="agency" value="source">
                 <div class="option-text"><span class="option-title">I Write the Script (Total Free Will)</span><span class="option-desc">I have 100% authorship. I can rewrite my destiny at any moment, regardless of my past or my biology.</span></div>
             </label>
             <label class="option-label">
                 <input type="radio" name="agency" value="compatibilist">
-                <div class="option-text"><span class="option-title">I Improvise the Scene (Shared Agency)</span><span class="option-desc">I have 100% control over my reactions. I didn't choose the setting or the plot (my genes/environment), but I choose how to play the hand I'm dealt.</span></div>
+                <div class="option-text"><span class="option-title">I Improvise the Scene (Shared Agency)</span><span class="option-desc">I have 100% control over my reactions. I didn't choose the setting (genes/environment), but I choose how to play the hand.</span></div>
             </label>
             <label class="option-label">
                 <input type="radio" name="agency" value="determinist">
-                <div class="option-text"><span class="option-title">I Play the Role (Determinism)</span><span class="option-desc">I have 100% commitment to the role. The script was written before I was born (by God or Physics). I am fulfilling a destiny I did not choose.</span></div>
+                <div class="option-text"><span class="option-title">I Play the Role (Determinism)</span><span class="option-desc">I have 100% commitment to the role. The script was written before I was born (by God or Physics).</span></div>
             </label>
-            <div class="validation-error" id="err-q2">⚠️ Please select an option to continue.</div>
-            <button type="button" onclick="handleNext(2)">Next Question</button>
-        </div>
+            
+            <div class="validation-error" id="err-q2" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="btn-next" data-current="2">Next Question</button>
+        </fieldset>
 
-        <div id="q3" class="question-block hidden fade-in">
-            <h3>3. The Compass <span class="tag">Layer 3</span></h3>
+        <fieldset id="q3" class="question-block hidden fade-in">
+            <legend><h3>3. The Compass <span class="tag">Layer 3</span></h3></legend>
             <div class="question-explainer">When you have a deep question about life, who do you trust most to give you the answer?</div>
+            
             <label class="option-label">
                 <input type="radio" name="epist" value="evidence">
                 <div class="option-text"><span class="option-title">I Look Outward (Sources)</span><span class="option-desc">I trust things outside of myself: Facts, History, Science, Holy Books, or Teachers.</span></div>
@@ -297,13 +170,15 @@
                 <input type="radio" name="epist" value="reason">
                 <div class="option-text"><span class="option-title">I Look Inward (Insight)</span><span class="option-desc">I trust my own internal tools: My Logic, Intuition, Conscience, or "Gut Feeling."</span></div>
             </label>
-            <div class="validation-error" id="err-q3">⚠️ Please select an option to continue.</div>
-            <button type="button" onclick="handleNext(3)">Next Question</button>
-        </div>
+            
+            <div class="validation-error" id="err-q3" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="btn-next" data-current="3">Next Question</button>
+        </fieldset>
 
-        <div id="q4" class="question-block hidden fade-in">
-            <h3>4. The Rules <span class="tag">Layer 4</span></h3>
+        <fieldset id="q4" class="question-block hidden fade-in">
+            <legend><h3>4. The Rules <span class="tag">Layer 4</span></h3></legend>
             <div class="question-explainer">Who defines what is "Right" and "Wrong"?</div>
+            
             <label class="option-label">
                 <input type="radio" name="ethics" value="divine">
                 <div class="option-text"><span class="option-title">A Divine Mind (God)</span><span class="option-desc">Morality comes from the commands or nature of a God/Deity.</span></div>
@@ -320,138 +195,168 @@
                 <input type="radio" name="ethics" value="individual">
                 <div class="option-text"><span class="option-title">The Self (Individual)</span><span class="option-desc">Morality is subjective. I decide what is right and wrong for myself.</span></div>
             </label>
-            <div class="validation-error" id="err-q4">⚠️ Please select an option to continue.</div>
-            <button type="button" onclick="handleNext(4)">Next Question</button>
-        </div>
+            
+            <div class="validation-error" id="err-q4" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="btn-next" data-current="4">Next Question</button>
+        </fieldset>
 
-        <div id="q5" class="question-block hidden fade-in">
-            <h3>5. The Mission <span class="tag">Layer 7</span></h3>
+        <fieldset id="q5" class="question-block hidden fade-in">
+            <legend><h3>5. The Mission <span class="tag">Layer 7</span></h3></legend>
             <div class="question-explainer">What is the ultimate goal of your journey?</div>
+            
             <label class="option-label">
                 <input type="radio" name="purpose" value="discovered">
-                <div class="option-text"><span class="option-title">It is a Destiny (Discovered)</span><span class="option-desc">There is a meaning waiting for me to find it. My job is to discover my role in the larger story and align with it.</span></div>
+                <div class="option-text"><span class="option-title">It is a Destiny (Discovered)</span><span class="option-desc">There is a meaning waiting for me to find it. My job is to discover my role in the larger story.</span></div>
             </label>
             <label class="option-label">
                 <input type="radio" name="purpose" value="created">
-                <div class="option-text"><span class="option-title">It is an Invention (Created)</span><span class="option-desc">The universe provided a blank canvas. There is no pre-set goal, so I must paint my own meaning and design my own purpose.</span></div>
+                <div class="option-text"><span class="option-title">It is an Invention (Created)</span><span class="option-desc">The universe provided a blank canvas. I must paint my own meaning and design my own purpose.</span></div>
             </label>
-            <div class="validation-error" id="err-q5">⚠️ Please select an option to continue.</div>
-            <button type="button" class="submit-btn" onclick="handleCoreSubmit()">Analyze My Core Profile</button>
-        </div>
-    </div>
+            
+            <div class="validation-error" id="err-q5" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="submit-btn" id="btn-core-submit">Analyze My Core Profile</button>
+        </fieldset>
 
-    <div id="view-interim" class="card hidden fade-in">
-        <h2>Your Core Profile</h2>
+    </section>
+
+    <section id="view-interim" class="card hidden fade-in" aria-labelledby="interim-title">
+        <h2 id="interim-title">Your Core Profile</h2>
         <div id="interim-prose" style="margin-bottom: 30px; color: #555;"></div>
+        
         <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent);">
             <h3 style="margin-top:0;">Deepen the Analysis?</h3>
-            <p>You have outlined the <strong>theory</strong> of your worldview (Reality, Truth, Ethics). To see which historical traditions align with your logic, we need to ask about your <strong>practice</strong>.</p>
-            <button type="button" class="submit-btn" onclick="showSpiritualQuiz()">Continue to Practice (2 Questions)</button>
-            <button type="button" class="restart-btn" onclick="showFinalResults()">Skip & View Profile</button>
+            <p>You have outlined the <strong>theory</strong> of your worldview. To see which historical traditions align with your logic, we need to ask about your <strong>practice</strong>.</p>
+            <button type="button" class="submit-btn" id="btn-continue-spiritual">Continue to Practice (2 Questions)</button>
+            <button type="button" class="restart-btn" id="btn-skip-spiritual">Skip & View Profile</button>
         </div>
-    </div>
+    </section>
 
-    <div id="view-spiritual" class="card hidden fade-in">
-        <div id="q6" class="question-block active">
-            <h3>6. The Connection <span class="tag">Layer 5</span></h3>
+    <section id="view-spiritual" class="card hidden fade-in" aria-live="polite">
+        
+        <fieldset id="q6" class="question-block active">
+            <legend><h3>6. The Connection <span class="tag">Layer 5</span></h3></legend>
             <div class="question-explainer">Most traditions use both. We know you do both, but which one actually "counts" for the connection?</div>
+            
             <label class="option-label">
                 <input type="radio" name="mech" value="abstract">
-                <div class="option-text"><span class="option-title">Internal (Rituals are Symbolic)</span><span class="option-desc">The real work happens inside (Faith, Prayer, Meditation). Rituals are beautiful symbols that express what is in my heart, but they don't save me.</span></div>
+                <div class="option-text"><span class="option-title">Internal (Rituals are Symbolic)</span><span class="option-desc">The real work happens inside (Faith, Prayer, Meditation). Rituals are symbols, but they don't save me.</span></div>
             </label>
             <label class="option-label">
                 <input type="radio" name="mech" value="physical">
-                <div class="option-text"><span class="option-title">Physical (Rituals are Essential)</span><span class="option-desc">The real work requires action. I must participate in physical realities (Sacraments, Yoga, Offerings) to bridge the gap to the Divine.</span></div>
+                <div class="option-text"><span class="option-title">Physical (Rituals are Essential)</span><span class="option-desc">The real work requires action. I must participate in physical realities (Sacraments, Yoga) to bridge the gap.</span></div>
             </label>
-            <div class="validation-error" id="err-q6">⚠️ Please select an option to continue.</div>
-            <button type="button" onclick="handleNext(6)">Next Question</button>
-        </div>
+            
+            <div class="validation-error" id="err-q6" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="btn-next" data-current="6">Next Question</button>
+        </fieldset>
 
-        <div id="q7" class="question-block hidden fade-in">
-            <h3>7. The Timeline <span class="tag">Layer 6</span></h3>
+        <fieldset id="q7" class="question-block hidden fade-in">
+            <legend><h3>7. The Timeline <span class="tag">Layer 6</span></h3></legend>
             <div class="question-explainer">How does personal transformation or salvation actually happen?</div>
+            
             <label class="option-label">
                 <input type="radio" name="payment" value="ongoing">
                 <div class="option-text"><span class="option-title">It is a Practice (Gradual)</span><span class="option-desc">It is a lifelong journey of growth. I must show up every day, learn, and evolve over time.</span></div>
             </label>
             <label class="option-label">
                 <input type="radio" name="payment" value="single human act">
-                <div class="option-text"><span class="option-title">It is a Decision (Instant)</span><span class="option-desc">It hinges on a definitive moment of choice or realization. Once I make that commitment, the path is set.</span></div>
+                <div class="option-text"><span class="option-title">It is a Decision (Instant)</span><span class="option-desc">It hinges on a definitive moment of choice. Once I make that commitment, the path is set.</span></div>
             </label>
             <label class="option-label">
                 <input type="radio" name="payment" value="one-time divine event">
-                <div class="option-text"><span class="option-title">It is a Gift (Already Done)</span><span class="option-desc">I don't "achieve" it; I receive it. The outcome is already secured by something greater than me (God, Fate, or Nature).</span></div>
+                <div class="option-text"><span class="option-title">It is a Gift (Already Done)</span><span class="option-desc">I don't "achieve" it; I receive it. The outcome is already secured by something greater than me.</span></div>
             </label>
-            <div class="validation-error" id="err-q7">⚠️ Please select an option to continue.</div>
-            <button type="button" class="submit-btn" onclick="handleSubmitSpiritual()">Reveal My Worldview</button>
-        </div>
-    </div>
+            
+            <div class="validation-error" id="err-q7" role="alert">⚠️ Please select an option to continue.</div>
+            <button type="button" class="submit-btn" id="btn-final-submit">Reveal My Worldview</button>
+        </fieldset>
 
-    <div id="view-results" class="card hidden fade-in">
-        <h2>Your Worldview Profile</h2>
+    </section>
+
+    <section id="view-results" class="card hidden fade-in" aria-labelledby="results-title">
+        <h2 id="results-title">Your Worldview Profile</h2>
         <div id="result-prose" style="margin-bottom: 20px; font-size: 1.1rem; color: #444;"></div>
         <div id="result-text"></div>
-        <button type="button" class="restart-btn" onclick="startOver()">Start Over</button>
-    </div>
+        <button type="button" class="restart-btn" id="btn-restart">Start Over</button>
+    </section>
 
-    <div class="footer">
+    <footer class="footer">
         Created by [ALDIGTON] • 🔒 No data is stored or tracked.
-    </div>
+    </footer>
 
-</div>
+</main>
 
 <script>
-    // --- LOGIC ENGINE (v61 Minimalist - Audited) ---
+/**
+ * WORLDVIEW CODEX DATABASE & LOGIC
+ * Encapsulated to prevent global scope pollution.
+ */
+(function() {
+    'use strict';
+
+    // --- SECURITY HELPER (v64 Platinum) ---
+    function setSafeHTML(element, html) {
+        if (!element) return;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        doc.querySelectorAll('script').forEach(node => node.remove());
+
+        doc.querySelectorAll('*').forEach(node => {
+            [...node.attributes].forEach(attr => {
+                if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+            });
+            if (node.tagName === 'A' && node.hasAttribute('href')) {
+                const href = node.getAttribute('href');
+                if (href && href.toLowerCase().trim().startsWith('javascript:')) node.setAttribute('href', '#');
+                node.setAttribute('target', '_blank');
+                node.setAttribute('rel', 'noopener noreferrer');
+            }
+        });
+
+        element.replaceChildren(...doc.body.childNodes);
+    }
+
+    // --- DATA ---
     const CONFIRMED_PATHS_DB = [
-        // CLUSTER 1: EVIDENTIAL THEISTS
         { fullPath: 'more, compatibilist, evidence, divine, physical, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Roman Catholicism', 'Eastern Orthodox Christianity', 'Coptic Orthodox Church', 'Assyrian Church of the East', 'Anglicanism (High Church)', 'Oxford Movement', 'Lutheranism (High Church)', 'Methodism (Sacramental)', 'Restoration Movement', 'Church of Christ', 'LDS (Mormonism)', 'Community of Christ', 'Santería', 'Vodou (Haitian)', 'Candomblé', 'Shinto', 'Tenrikyo'] },
         { fullPath: 'more, compatibilist, evidence, divine, abstract, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Islam (Sunni)', 'Islam (Shia)', 'Islam (Ahmadiyya)', 'Orthodox Judaism', 'Conservative Judaism', 'Karaite Judaism', 'Sikhism', 'Baha\'i Faith', 'Zoroastrianism', 'Pentecostalism', 'Assembly of God', 'Church of God in Christ', 'Foursquare Church', 'Vineyard Movement', 'Evangelicalism', 'Baptist (General)', 'Free Will Baptist', 'Southern Baptist (Non-Calvinist)', 'Methodism (Low Church)', 'Wesleyan Church', 'Church of the Nazarene', 'Salvation Army', 'Holiness Movement', 'Seventh-day Adventist', 'Jehovah\'s Witnesses', 'Christadelphians', 'Anabaptism', 'Mennonite', 'Amish', 'Hutterite', 'Brethren in Christ', 'Classical Arminianism', 'Molinism'] },
         { fullPath: 'more, determinist, evidence, divine, physical, ongoing, discovered', fingerprint: 'more, evidence, divine, ongoing', examples: ['Jansenism', 'Augustinian Rigorism'] },
-        // CLUSTER 2: RATIONAL THEISTS
         { fullPath: 'more, compatibilist, reason, divine, abstract, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Sufism', 'Sufi Orders (Dervish)', 'Christian Mysticism', 'Quietism', 'Kabbalah', 'Hasidic Judaism', 'Jewish Mysticism', 'Quakerism (Society of Friends)', 'Shakers', 'Christian Science', 'New Thought', 'Unity Church', 'Science of Mind', 'Rosicrucianism', 'Martinism', 'Swedenborgianism', 'Brahmo Samaj'] },
         { fullPath: 'more, compatibilist, reason, divine, physical, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Theophilanthropy', 'Deistic Ritualism'] },
         { fullPath: 'more, source, reason, divine, physical, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Hermeticism', 'Neoplatonic Theurgy', 'Freemasonry', 'Masonic Rites'] },
         { fullPath: 'more, determinist, reason, divine, abstract, ongoing, discovered', fingerprint: 'more, reason, divine, ongoing', examples: ['Druze Faith', 'Alawism', 'Yezidism'] },
-        // CLUSTER 3: SPIRITUAL NATURALISTS
         { fullPath: 'more, compatibilist, reason, nature, abstract, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Theravada Buddhism', 'Mahayana Buddhism', 'Zen Buddhism', 'Ch\'an', 'Nichiren Buddhism', 'Secular Buddhism', 'Taoism (Classical)', 'Philosophical Taoism', 'Stoicism (Ancient)', 'Stoic Physics', 'Jainism', 'Digambara', 'Svetambara', 'Advaita Vedanta', 'Vishishtadvaita', 'Samkhya', 'Theosophy', 'Anthroposophy', 'Fourth Way (Gurdjieff)', 'Pantheism', 'Monism', 'Deep Ecology (Spiritual)', 'Ecofeminism (Spiritual)', 'Biocentrism'] },
         { fullPath: 'more, compatibilist, reason, nature, physical, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Vajrayana (Tibetan Buddhism)', 'Dzogchen', 'Neo-Confucianism', 'Pythagoreanism'] },
         { fullPath: 'more, determinist, reason, nature, abstract, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Gnosticism (Sethian)', 'Manichaeism', 'Catharism', 'Philosophical Pessimism'] },
         { fullPath: 'more, source, reason, nature, abstract, ongoing, discovered', fingerprint: 'more, reason, nature, ongoing', examples: ['Classical Deism', 'Pelagianism', 'Unitarianism (Historical)'] },
         { fullPath: 'more, compatibilist, reason, individual, abstract, ongoing, discovered', fingerprint: 'more, reason, individual, ongoing', examples: ['Transcendentalism', 'Emersonian Spirituality', 'Romanticism'] },
-        // CLUSTER 4: EVIDENTIAL NATURALISTS
         { fullPath: 'more, compatibilist, evidence, nature, abstract, ongoing, discovered', fingerprint: 'more, evidence, nature, ongoing', examples: ['Hinduism (General)', 'Smartism', 'Arya Samaj', 'Wicca (Eclectic)', 'Kemetism', 'Soka Gakkai'] },
         { fullPath: 'more, compatibilist, evidence, nature, physical, ongoing, discovered', fingerprint: 'more, evidence, nature, ongoing', examples: ['Taoism (Religious)', 'Daoist Alchemy', 'Asatru', 'Heathenry', 'Norse Paganism', 'Theodism', 'Modern Druidry', 'Celtic Reconstructionism', 'Hellenic Polytheism', 'Santo Daime', 'Umbanda', 'Spiritualism', 'Espiritismo', 'Tantra', 'Kundalini Yoga', 'Hatha Yoga', 'Kriya Yoga', 'Agama Hinduism', 'Shaivism', 'Shaktism'] },
         { fullPath: 'more, determinist, evidence, nature, physical, ongoing, discovered', fingerprint: 'more, evidence, nature, ongoing', examples: ['Mandaeism', 'Sabianism'] },
         { fullPath: 'more, compatibilist, evidence, group, physical, ongoing, discovered', fingerprint: 'more, evidence, group, ongoing', examples: ['Shamanism', 'Neo-Shamanism', 'Indigenous Australian Spirituality', 'Dreamtime', 'Native American Church', 'Lakota Tradition', 'Inuit Shamanism', 'Yoruba Religion'] },
-        // CLUSTER 5: GRACE THEISTS
         { fullPath: 'more, determinist, evidence, divine, abstract, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Calvinism', 'Reformed Christianity', 'Presbyterianism', 'Congregationalism', 'Primitive Baptist', 'Strict Baptist', 'Hyper-Calvinism', 'Huguenots', 'Puritanism'] },
         { fullPath: 'more, determinist, evidence, divine, physical, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Lutheranism (Confessional)', 'Old Lutheranism'] },
-        // CLUSTER 6: NATURE'S GRACE
         { fullPath: 'more, determinist, evidence, nature, abstract, one-time divine event, discovered', fingerprint: 'more, evidence, nature, one-time divine event', examples: ['Pure Land Buddhism', 'Jodo Shinshu', 'Jodo Shu'] },
         { fullPath: 'more, compatibilist, evidence, nature, physical, one-time divine event, discovered', fingerprint: 'more, evidence, nature, one-time divine event', examples: ['Kashi Moksha', 'Ritual Suicide (Historical Jainism)'] },
-        // CLUSTER 7: TRIBAL PRAGMATISTS
         { fullPath: 'more, compatibilist, reason, group, physical, ongoing, discovered', fingerprint: 'more, reason, group, ongoing', examples: ['Confucianism', 'Aristotelianism', 'Legalism (Chinese)'] },
         { fullPath: 'more, compatibilist, evidence, group, abstract, ongoing, discovered', fingerprint: 'more, evidence, group, ongoing', examples: ['Romani Religion', 'Folk Catholicism'] },
         { fullPath: 'more, compatibilist, evidence, group, abstract, ongoing, created', fingerprint: 'more, evidence, group, ongoing', examples: ['Liberation Theology', 'Black Theology', 'Feminist Theology'] },
         { fullPath: 'more, compatibilist, reason, group, abstract, ongoing, created', fingerprint: 'more, reason, group, ongoing', examples: ['Unitarian Universalism', 'Ethical Culture', 'Reconstructionist Judaism'] },
         { fullPath: 'more, compatibilist, reason, group, physical, ongoing, created', fingerprint: 'more, reason, group, ongoing', examples: ['Civil Religion', 'State Shinto (Historical)'] },
         { fullPath: 'physical, source, reason, group, na, na, created', fingerprint: 'physical, reason, group, na', examples: ['Existentialist Marxism', 'Sartrean Socialism', 'Situationist International'] },
-        // CLUSTER 8: INDIVIDUALISTS
         { fullPath: 'more, compatibilist, evidence, individual, abstract, ongoing, discovered', fingerprint: 'more, evidence, individual, ongoing', examples: ['New Age Spirituality', 'Self-Realization Fellowship', 'Eckankar', 'I Am Movement'] },
         { fullPath: 'more, compatibilist, evidence, individual, physical, ongoing, discovered', fingerprint: 'more, evidence, individual, ongoing', examples: ['Thelema', 'Hermetic Order of the Golden Dawn', 'Ordo Templi Orientis', 'Ceremonial Magic'] },
         { fullPath: 'more, compatibilist, evidence, individual, physical, ongoing, created', fingerprint: 'more, evidence, individual, ongoing', examples: ['Obeah', 'Hoodoo', 'Rootwork', 'Folk Magic'] },
         { fullPath: 'more, compatibilist, reason, individual, physical, ongoing, discovered', fingerprint: 'more, reason, individual, ongoing', examples: ['Vamachara', 'Left-Hand Path Tantra', 'Aghori'] },
         { fullPath: 'more, source, reason, individual, abstract, ongoing, created', fingerprint: 'more, reason, individual, ongoing', examples: ['Solipsism', 'Subjective Idealism'] },
         { fullPath: 'more, source, reason, individual, abstract, single human act, created', fingerprint: 'more, reason, individual, single human act', examples: ['Discordianism', 'Chaos Magic'] },
-        // CLUSTER 9: OPEN THEISTS
         { fullPath: 'more, compatibilist, reason, divine, abstract, ongoing, created', fingerprint: 'more, reason, divine, ongoing', examples: ['Process Theology', 'Moralistic Therapeutic Deism', 'Emergent Church', 'Progressive Christianity'] },
         { fullPath: 'more, compatibilist, evidence, divine, abstract, ongoing, created', fingerprint: 'more, evidence, divine, ongoing', examples: ['Open Theism', 'Post-Conservative Evangelicalism'] },
-        // SPECIALS
         { fullPath: 'more, compatibilist, reason, divine, abstract, one-time divine event, created', fingerprint: 'more, reason, divine, one-time divine event', examples: ['Christian Universalism', 'Universalist Church of America'] },
         { fullPath: 'more, compatibilist, evidence, divine, physical, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Eleusinian Mysteries', 'Mithraism'] },
         { fullPath: 'more, compatibilist, evidence, divine, abstract, single human act, discovered', fingerprint: 'more, evidence, divine, single human act', examples: ['Free Grace Theology', 'Zane Hodges Theology', 'Easy Believism'] },
         { fullPath: 'more, compatibilist, evidence, divine, abstract, one-time divine event, discovered', fingerprint: 'more, evidence, divine, one-time divine event', examples: ['Eternal Security Baptist', 'Calvary Chapel', 'Independent Fundamental Baptist'] },
-        // SECULAR AXIS
         { fullPath: 'physical, compatibilist, reason, group, na, na, created', fingerprint: 'physical, reason, group, na', examples: ['Secular Humanism', 'Humanistic Judaism', 'Utilitarianism', 'Pragmatism'] },
         { fullPath: 'physical, compatibilist, evidence, group, na, na, created', fingerprint: 'physical, evidence, group, na', examples: ['Academic Skepticism', 'Scientific Materialism', 'Logical Positivism', 'Empiricism'] },
         { fullPath: 'physical, determinist, evidence, group, na, na, discovered', fingerprint: 'physical, evidence, group, na', examples: ['Marxism', 'Historical Materialism', 'Dialectical Materialism', 'Communism'] },
@@ -468,22 +373,105 @@
         { fullPath: 'more, compatibilist, evidence, nature, physical, ongoing, created', fingerprint: 'more, evidence, nature, ongoing', examples: ['Atheopaganism', 'Naturalistic Pantheism'] }
     ];
 
-    // --- LOGIC FUNCTIONS ---
-    const userProfile = { meta: null, agency: null, epist: null, ethics: null, purpose: null, mech: null, payment: null };
     const questionMap = { q1: 'meta', q2: 'agency', q3: 'epist', q4: 'ethics', q5: 'purpose', q6: 'mech', q7: 'payment' };
+    const userProfile = { meta: null, agency: null, epist: null, ethics: null, purpose: null, mech: null, payment: null };
 
+    // --- DOM MANIPULATION ---
+
+    function switchView(viewId) {
+        document.querySelectorAll('section.card').forEach(el => el.classList.add('hidden'));
+        const activeView = document.getElementById(viewId);
+        activeView.classList.remove('hidden');
+        window.scrollTo(0,0);
+        
+        // Focus Management: Move focus to the first heading for accessibility
+        const heading = activeView.querySelector('h1, h2, h3');
+        if (heading) {
+            heading.setAttribute('tabindex', '-1');
+            heading.focus();
+        }
+    }
+
+    function showQuestion(qID) {
+        document.querySelectorAll('.question-block').forEach(q => q.classList.add('hidden'));
+        document.querySelectorAll('.validation-error').forEach(e => e.style.display = 'none');
+        document.getElementById(qID).classList.remove('hidden');
+    }
+
+    // Logic Refactor: Simplified handleNext to rely on explicit IDs
+    function handleNext(currentStep) {
+        const qID = `q${currentStep}`;
+        const qName = questionMap[qID];
+        const selected = document.querySelector(`input[name="${qName}"]:checked`);
+        const errorMsg = document.getElementById(`err-${qID}`);
+        
+        if (!selected) {
+            errorMsg.style.display = 'block';
+            return;
+        }
+        
+        errorMsg.style.display = 'none';
+        userProfile[qName] = selected.value;
+        showQuestion(`q${parseInt(currentStep) + 1}`);
+    }
+
+    function handleCoreSubmit() {
+        const selected = document.querySelector(`input[name="purpose"]:checked`);
+        const errorMsg = document.getElementById('err-q5');
+        
+        if (!selected) {
+            errorMsg.style.display = 'block';
+            return;
+        }
+        
+        errorMsg.style.display = 'none';
+        userProfile.purpose = selected.value;
+        
+        if (userProfile.meta === 'physical') {
+            userProfile.mech = 'na';
+            userProfile.payment = 'na';
+            showFinalResults();
+        } else {
+            let prose = `So far, you believe there is <strong>Something More</strong> than the physical world. `;
+            prose += `You see yourself as the <strong>${userProfile.agency === 'source' ? 'Author' : userProfile.agency === 'compatibilist' ? 'Improviser' : 'Role-Player'}</strong> of your life. `;
+            prose += `You look <strong>${userProfile.epist === 'evidence' ? 'Outward' : 'Inward'}</strong> for truth and define rules based on <strong>${userProfile.ethics}</strong> standards.`;
+            // Safe injection
+            setSafeHTML(document.getElementById('interim-prose'), prose);
+            switchView('view-interim');
+        }
+    }
+
+    function handleSubmitSpiritual() {
+        const selected = document.querySelector(`input[name="payment"]:checked`);
+        const errorMsg = document.getElementById('err-q7');
+        
+        if (!selected) {
+            errorMsg.style.display = 'block';
+            return;
+        }
+        
+        errorMsg.style.display = 'none';
+        userProfile.payment = selected.value;
+        showFinalResults();
+    }
+
+    // Paradox Logic (No changes needed)
     function checkConstraints(p) {
         const err = [];
-        if (p.meta === 'physical' && p.ethics === 'divine') err.push("Philosophical Paradox: A purely physical universe cannot have Divine ethics.");
-        if (p.meta === 'physical') {
-            if (p.agency === 'determinist' && p.purpose === 'created') err.push("Philosophical Paradox: If the universe is physically determined, purpose is inevitable (Discovered), not Created.");
-            if (p.agency !== 'determinist' && p.purpose === 'discovered') err.push("Philosophical Paradox: Without a Determiner (God/Fate), purpose must be Created by you.");
-        }
-        if (p.meta === 'more') {
-            if (p.agency === 'determinist' && p.payment === 'single human act') err.push("Philosophical Paradox: If your path is Determined, you cannot be saved by a Single Human Choice.");
-            if (p.agency === 'source' && p.payment === 'one-time divine event') err.push("Philosophical Paradox: Absolute Free Will conflicts with a unilateral Divine Event overriding it.");
-            if (p.agency === 'determinist' && p.purpose === 'created') err.push("Philosophical Paradox: If everything is Determined, purpose is pre-set (Discovered), not Created.");
-            if (p.agency === 'determinist' && p.ethics === 'individual') err.push("Philosophical Paradox: If you are Determined, you cannot independently define your own Individual ethics.");
+        try {
+            if (p.meta === 'physical' && p.ethics === 'divine') err.push("Philosophical Paradox: A purely physical universe cannot have Divine ethics.");
+            if (p.meta === 'physical') {
+                if (p.agency === 'determinist' && p.purpose === 'created') err.push("Philosophical Paradox: If the universe is physically determined, purpose is inevitable (Discovered), not Created.");
+                if (p.agency !== 'determinist' && p.purpose === 'discovered') err.push("Philosophical Paradox: Without a Determiner (God/Fate), purpose must be Created by you.");
+            }
+            if (p.meta === 'more') {
+                if (p.agency === 'determinist' && p.payment === 'single human act') err.push("Philosophical Paradox: If your path is Determined, you cannot be saved by a Single Human Choice.");
+                if (p.agency === 'source' && p.payment === 'one-time divine event') err.push("Philosophical Paradox: Absolute Free Will conflicts with a unilateral Divine Event overriding it.");
+                if (p.agency === 'determinist' && p.purpose === 'created') err.push("Philosophical Paradox: If everything is Determined, purpose is pre-set (Discovered), not Created.");
+                if (p.agency === 'determinist' && p.ethics === 'individual') err.push("Philosophical Paradox: If you are Determined, you cannot independently define your own Individual ethics.");
+            }
+        } catch (e) {
+            // Logic check fail - silent in production
         }
         return err;
     }
@@ -499,192 +487,106 @@
         return "Your worldview is a highly specific <strong>'Custom Build.'</strong> You have combined theological blocks—Agency, Ethics, and Ritual—in a way that no major historical religion has standardized.";
     }
 
-    function getFingerprint(p) {
-        return [p.meta, p.epist, p.ethics, p.payment].join(', ');
-    }
+    function getFingerprint(p) { return [p.meta, p.epist, p.ethics, p.payment].join(', '); }
 
     function findClosestMatch(userFingerprint) {
-        const matches = new Set(); 
+        const matches = new Set();
         CONFIRMED_PATHS_DB.forEach(path => {
-            if (path.fingerprint === userFingerprint) {
-                path.examples.forEach(example => matches.add(example));
-            }
+            if (path.fingerprint === userFingerprint) { path.examples.forEach(example => matches.add(example)); }
         });
         return matches.size > 0 ? Array.from(matches) : null;
     }
 
-    function getFullPath(p) {
-        return [p.meta, p.agency, p.epist, p.ethics, p.mech, p.payment, p.purpose].join(', ');
-    }
-
-    // --- UI HELPERS ---
-    function switchView(viewId) {
-        document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
-        document.getElementById(viewId).classList.remove('hidden');
-    }
-
-    function showQuestion(qID) {
-        document.querySelectorAll('.question-block').forEach(q => q.classList.add('hidden'));
-        document.querySelectorAll('.validation-error').forEach(e => e.style.display = 'none'); 
-        document.getElementById(qID).classList.remove('hidden');
-    }
-
-    function startQuiz() { 
-        switchView('view-quiz'); 
-        showQuestion('q1'); 
-    }
-
-    function handleNext(qNum) {
-        const qID = `q${qNum}`;
-        const qName = questionMap[qID];
-        const selected = document.querySelector(`input[name="${qName}"]:checked`);
-        const errorMsg = document.getElementById(`err-${qID}`);
-        
-        if (!selected) { 
-            errorMsg.style.display = 'block';
-            return; 
-        }
-        
-        errorMsg.style.display = 'none';
-        userProfile[qName] = selected.value;
-        showQuestion(`q${qNum + 1}`);
-    }
-
-    function handleCoreSubmit() {
-        const selected = document.querySelector(`input[name="purpose"]:checked`);
-        const errorMsg = document.getElementById('err-q5');
-        
-        if (!selected) { 
-            errorMsg.style.display = 'block';
-            return; 
-        }
-        
-        errorMsg.style.display = 'none';
-        userProfile.purpose = selected.value;
-        
-        if (userProfile.meta === 'physical') {
-            userProfile.mech = 'na'; 
-            userProfile.payment = 'na'; 
-            showFinalResults();
-        } else {
-            let prose = `So far, you believe there is <strong>Something More</strong> than the physical world. `;
-            prose += `You see yourself as the <strong>${userProfile.agency === 'source' ? 'Author' : userProfile.agency === 'compatibilist' ? 'Improviser' : 'Role-Player'}</strong> of your life. `;
-            prose += `You look <strong>${userProfile.epist === 'evidence' ? 'Outward' : 'Inward'}</strong> for truth and define rules based on <strong>${userProfile.ethics}</strong> standards.`;
-            
-            document.getElementById('interim-prose').innerHTML = prose;
-            switchView('view-interim');
-        }
-    }
-
-    function showSpiritualQuiz() { 
-        switchView('view-spiritual'); 
-        showQuestion('q6'); 
-    }
-
-    function handleSubmitSpiritual() {
-        const selected = document.querySelector(`input[name="payment"]:checked`);
-        const errorMsg = document.getElementById('err-q7');
-        
-        if (!selected) { 
-            errorMsg.style.display = 'block';
-            return; 
-        }
-        
-        errorMsg.style.display = 'none';
-        userProfile.payment = selected.value;
-        showFinalResults();
-    }
+    function getFullPath(p) { return [p.meta, p.agency, p.epist, p.ethics, p.mech, p.payment, p.purpose].join(', '); }
 
     function showFinalResults() {
-        switchView('view-results');
-        const fullPath = getFullPath(userProfile);
-        const errors = checkConstraints(userProfile);
-        const resultDiv = document.getElementById('result-text');
-        
-        // 1. Generate Narrative Prose
-        let prose = `Your worldview is rooted in a <strong>${userProfile.meta === 'physical' ? 'Physical' : 'Spiritual'}</strong> reality. `;
-        
-        if(userProfile.agency === 'source') prose += `You see yourself as the <strong>Author</strong> of your own script, `;
-        else if(userProfile.agency === 'compatibilist') prose += `You see yourself <strong>Improvising</strong> within a larger story, `;
-        else prose += `You view your life as a <strong>Role</strong> written by fate or biology, `;
-
-        prose += `and you look <strong>${userProfile.epist === 'evidence' ? 'Outward' : 'Inward'}</strong> for your moral compass. `;
-        
-        if(userProfile.ethics === 'divine') prose += `You believe the rules are set by a <strong>Higher Power</strong>. `;
-        else if(userProfile.ethics === 'nature') prose += `You believe the rules are woven into <strong>Natural Law</strong>. `;
-        else if(userProfile.ethics === 'group') prose += `You believe the rules are defined by the <strong>Community</strong>. `;
-        else prose += `You believe the rules are defined by the <strong>Individual</strong>. `;
-
-        if(userProfile.mech && userProfile.mech !== 'na') {
-            prose += `To connect with this truth, you rely on <strong>${userProfile.mech === 'abstract' ? 'Internal Faith' : 'Physical Rituals'}</strong>. `;
+        try {
+            switchView('view-results');
+            const fullPath = getFullPath(userProfile);
+            const errors = checkConstraints(userProfile);
+            const resultDiv = document.getElementById('result-text');
             
-            if (userProfile.payment === 'ongoing') prose += `You view the path forward as a <strong>Continuous Practice</strong>. `;
-            else if (userProfile.payment === 'single human act') prose += `You believe the path hinges on <strong>One Decisive Moment</strong>. `;
-            else prose += `You believe the outcome is a <strong>Received Gift</strong> (like Grace) rather than your own effort. `;
-        }
-
-        if (userProfile.purpose === 'discovered') prose += `Ultimately, you believe your mission is <strong>Pre-ordained</strong> for you to discover.`;
-        else prose += `Ultimately, you believe your mission is <strong>Created</strong> by you.`;
-
-        // 2. Insert Prose (No Spectrum)
-        document.getElementById('result-prose').innerHTML = prose;
-        
-        // 3. Logic Output
-        if (errors.length > 0) {
-            // PARADOX RESULT
-            resultDiv.innerHTML = `
-                <div class="result-box result-paradox">
-                    <h3>🔸 Philosophical Paradox</h3>
-                    <p>You selected ideas that usually conflict with each other. Your worldview has a tension between:</p>
-                    <ul class="result-list">${errors.map(e => `<li>${e}</li>`).join('')}</ul>
-                    
-                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e6b980;">
-                        <p style="font-size: 0.95rem; color: #8a6d3b;">
-                            <strong>Teacher's Note:</strong> Don't worry, this happens! It usually means you are trying to hold onto two opposites (like <strong>Total Control</strong> vs. <strong>Total Destiny</strong>) at the same time.
-                        </p>
-                        <p style="font-size: 0.95rem; color: #8a6d3b;">
-                            To find your true path, <strong>Start Over</strong> and ask yourself: <em>"If I had to pick only one, which is more true?"</em>
-                        </p>
-                    </div>
-                </div>`;
-        } else {
-            const match = CONFIRMED_PATHS_DB.find(p => p.fullPath === fullPath);
-            if (match) {
-                resultDiv.innerHTML = `<div class="result-box result-confirmed"><h3>🟩 Confirmed Path</h3><p>Your worldview matches a specific historical tradition:</p><ul class="result-list">${match.examples.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
-            } else {
-                const explanation = getUniqueAnalysis(userProfile);
-                let html = `<div class="result-box result-unconfirmed"><h3>🟨 Unique Path</h3><p>${explanation}</p>`;
-                
-                if (userProfile.payment) {
-                    const matches = findClosestMatch(getFingerprint(userProfile));
-                    if (matches && matches.length > 0) {
-                        html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;"><h4>Your Philosophical Family</h4><p>While your exact path is unique, you share core values with:</p><ul class="result-list">${matches.map(m => `<li>${m}</li>`).join('')}</ul></div>`;
-                    } else {
-                        // THE UNALIGNED
-                        html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;">
-                                        <h4>🧩 Unaligned Worldview</h4>
-                                        <p>Your worldview is logically valid, but historically rare (No Match Found).</p>
-                                        <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
-                                            <strong>Teacher's Note:</strong> Most people align with a tradition. Since you didn't, you might have mismatched your <strong>Theory</strong> (Foundation/Rules) with your <strong>Practice</strong> (Timeline). 
-                                        </p>
-                                        <p style="font-size: 0.9rem; color: #666;">
-                                            If this feels accidental, you might want to double-check your path.
-                                        </p>
-                                     </div>`;
-                    }
-                }
-                html += `</div>`;
-                resultDiv.innerHTML = html;
+            let prose = `Your worldview is rooted in a <strong>${userProfile.meta === 'physical' ? 'Physical' : 'Spiritual'}</strong> reality. `;
+            
+            if(userProfile.agency === 'source') prose += `You see yourself as the <strong>Author</strong> of your own script, `;
+            else if(userProfile.agency === 'compatibilist') prose += `You see yourself <strong>Improvising</strong> within a larger story, `;
+            else prose += `You view your life as a <strong>Role</strong> written by fate or biology, `;
+            
+            prose += `and you look <strong>${userProfile.epist === 'evidence' ? 'Outward' : 'Inward'}</strong> for your moral compass. `;
+            
+            if(userProfile.ethics === 'divine') prose += `You believe the rules are set by a <strong>Higher Power</strong>. `;
+            else if(userProfile.ethics === 'nature') prose += `You believe the rules are woven into <strong>Natural Law</strong>. `;
+            else if(userProfile.ethics === 'group') prose += `You believe the rules are defined by the <strong>Community</strong>. `;
+            else prose += `You believe the rules are defined by the <strong>Individual</strong>. `;
+            
+            if(userProfile.mech && userProfile.mech !== 'na') {
+                prose += `To connect with this truth, you rely on <strong>${userProfile.mech === 'abstract' ? 'Internal Faith' : 'Physical Rituals'}</strong>. `;
+                if (userProfile.payment === 'ongoing') prose += `You view the path forward as a <strong>Continuous Practice</strong>. `;
+                else if (userProfile.payment === 'single human act') prose += `You believe the path hinges on <strong>One Decisive Moment</strong>. `;
+                else prose += `You believe the outcome is a <strong>Received Gift</strong> (like Grace) rather than your own effort. `;
             }
+            
+            if (userProfile.purpose === 'discovered') prose += `Ultimately, you believe your mission is <strong>Pre-ordained</strong> for you to discover.`;
+            else prose += `Ultimately, you believe your mission is <strong>Created</strong> by you.`;
+            
+            setSafeHTML(document.getElementById('result-prose'), prose);
+            
+            if (errors.length > 0) {
+                const paradoxHtml = `<div class="result-box result-paradox"><h3>🔸 Philosophical Paradox</h3><p>You selected ideas that usually conflict with each other. Your worldview has a tension between:</p><ul class="result-list">${errors.map(e => `<li>${e}</li>`).join('')}</ul><div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e6b980;"><p style="font-size: 0.95rem; color: #8a6d3b;"><strong>Teacher's Note:</strong> Don't worry, this happens! It usually means you are trying to hold onto two opposites (like <strong>Total Control</strong> vs. <strong>Total Destiny</strong>) at the same time.</p><p style="font-size: 0.95rem; color: #8a6d3b;">To find your true path, <strong>Start Over</strong> and ask yourself: <em>"If I had to pick only one, which is more true?"</em></p></div></div>`;
+                setSafeHTML(resultDiv, paradoxHtml);
+            } else {
+                const match = CONFIRMED_PATHS_DB.find(p => p.fullPath === fullPath);
+                
+                if (match) {
+                    const matchHtml = `<div class="result-box result-confirmed"><h3>🟩 Confirmed Path</h3><p>Your worldview matches a specific historical tradition:</p><ul class="result-list">${match.examples.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
+                    setSafeHTML(resultDiv, matchHtml);
+                } else {
+                    const explanation = getUniqueAnalysis(userProfile);
+                    let html = `<div class="result-box result-unconfirmed"><h3>🟨 Unique Path</h3><p>${explanation}</p>`;
+                    
+                    if (userProfile.payment) {
+                        const matches = findClosestMatch(getFingerprint(userProfile));
+                        if (matches && matches.length > 0) {
+                            html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;"><h4>Your Philosophical Family</h4><p>While your exact path is unique, you share core values with:</p><ul class="result-list">${matches.map(m => `<li>${m}</li>`).join('')}</ul></div>`;
+                        } else {
+                            html += `<div style="margin-top:20px; padding-top:10px; border-top:1px solid #ddd;"><h4>🧩 Unaligned Worldview</h4><p>Your worldview is logically valid, but historically rare (No Match Found).</p><p style="font-size: 0.9rem; color: #666; margin-top: 10px;"><strong>Teacher's Note:</strong> Most people align with a tradition. Since you didn't, you might have mismatched your <strong>Theory</strong> (Foundation/Rules) with your <strong>Practice</strong> (Timeline).</p><p style="font-size: 0.9rem; color: #666;">If this feels accidental, you might want to double-check your path.</p></div>`;
+                        }
+                    }
+                    html += `</div>`;
+                    setSafeHTML(resultDiv, html);
+                }
+            }
+        } catch (e) {
+            setSafeHTML(document.getElementById('result-text'), `<div class="result-box result-error"><h3>⚠️ System Error</h3><p>An unexpected error occurred while calculating your results.</p></div>`);
         }
     }
 
-    function startOver() { location.reload(); }
-    
+    // --- EVENT LISTENERS ---
     document.addEventListener('DOMContentLoaded', () => {
-       console.log("Worldview Codex v61 Minimalist Loaded.");
-    });
-</script>
+        document.getElementById('btn-start').addEventListener('click', () => {
+            switchView('view-quiz');
+            showQuestion('q1');
+        });
 
+        document.querySelectorAll('.btn-next').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                handleNext(e.target.getAttribute('data-current'));
+            });
+        });
+
+        document.getElementById('btn-core-submit').addEventListener('click', handleCoreSubmit);
+        document.getElementById('btn-continue-spiritual').addEventListener('click', () => {
+            switchView('view-spiritual');
+            showQuestion('q6');
+        });
+        document.getElementById('btn-skip-spiritual').addEventListener('click', showFinalResults);
+        document.getElementById('btn-final-submit').addEventListener('click', handleSubmitSpiritual);
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            location.reload();
+        });
+    });
+
+})();
+</script>
 </body>
 </html>
